@@ -6,7 +6,7 @@ import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/risk-shield-mvp">
       <nav className="navbar">
         <Link to="/" className="nav-brand">
           <Activity size={24} color="#3b82f6" />
