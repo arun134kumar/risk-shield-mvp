@@ -1,0 +1,31 @@
+import React from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { Activity } from 'lucide-react';
+import Landing from './pages/Landing';
+import Dashboard from './pages/Dashboard';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <nav className="navbar">
+        <Link to="/" className="nav-brand">
+          <Activity size={24} color="#3b82f6" />
+          <span>RiskShield MVP</span>
+        </Link>
+        <div style={{display: 'flex', gap: '1rem'}}>
+          <Link to="/" style={{color: '#fff', textDecoration: 'none'}}>Home</Link>
+          <Link to="/dashboard" style={{color: '#fff', textDecoration: 'none'}}>Dashboard</Link>
+        </div>
+      </nav>
+      
+      <div className="layout-container">
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
+  );
+}
+
+export default App;
