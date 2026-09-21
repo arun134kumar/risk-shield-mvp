@@ -18,7 +18,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('http://localhost:3001/api/analyze');
+        const res = await fetch('https://risk-shield-mvp.vercel.app/api/analyze');
         const result = await res.json();
         setData(result);
       } catch (err) {
