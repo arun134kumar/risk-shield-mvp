@@ -56,7 +56,7 @@ export default function FileUpload() {
     formData.append('file', file);
 
     try {
-      const res = await fetch('http://localhost:3001/api/upload', {
+      const res = await fetch('https://risk-shield-mvp.vercel.app/api/upload', {
         method: 'POST',
         body: formData,
       });
@@ -82,7 +82,7 @@ export default function FileUpload() {
     setError(null);
 
     try {
-      const res = await fetch('http://localhost:3001/api/demo', {
+      const res = await fetch('https://risk-shield-mvp.vercel.app/api/demo', {
         method: 'POST'
       });
 
