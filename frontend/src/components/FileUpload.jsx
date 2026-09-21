@@ -62,8 +62,15 @@ export default function FileUpload() {
       });
 
       if (res.ok) {
+        const result = await res.json();
+
+        localStorage.setItem(
+          'riskShieldAnalysis',
+          JSON.stringify(result.data)
+        );
+
         simulateSteps(() => {
-            navigate('/dashboard');
+          navigate('/dashboard');
         });
       } else {
         const data = await res.json();
@@ -87,10 +94,18 @@ export default function FileUpload() {
       });
 
       if (res.ok) {
+        const result = await res.json();
+
+        localStorage.setItem(
+          'riskShieldAnalysis',
+          JSON.stringify(result.data)
+        );
+
         simulateSteps(() => {
-            navigate('/dashboard');
+          navigate('/dashboard');
         });
-      } else {
+      }
+        else {
         throw new Error('Failed to start demo');
       }
     } catch (err) {
