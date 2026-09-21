@@ -212,7 +212,11 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         
         currentAnalysis = await generateDashboardData(parsedData);
         
-        res.json({ status: 'success', message: 'Analysis complete.' });
+        res.json({
+    status: 'success',
+    message: 'Analysis complete.',
+    data: currentAnalysis
+});
     } catch (err) {
         console.error("Upload Error:", err.message);
         res.status(500).json({ error: err.message || 'Failed to process file.' });
@@ -261,7 +265,11 @@ router.post('/demo', async (req, res) => {
         };
 
         currentAnalysis = await generateDashboardData(parsedData);
-        res.json({ status: 'success', message: 'Demo data generated.' });
+        res.json({
+    status: 'success',
+    message: 'Demo data generated.',
+    data: currentAnalysis
+});
     } catch (err) {
         res.status(500).json({ error: 'Failed to start demo.' });
     }
