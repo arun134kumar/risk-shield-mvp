@@ -9,30 +9,55 @@ export default function FinalReport() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchReport = async () => {
-            if (!caseData || !caseData.caseInfo) return;
-            setLoading(true);
-            try {
-                const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:3001' : 'https://risk-shield-mvp.vercel.app');
-                const res = await fetch(`${API_BASE_URL}/api/cases/${caseData.caseInfo.id}/report`, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                if (!res.ok) throw new Error("Failed to fetch report");
-                const data = await res.json();
-                setReport(data);
-            } catch (err) {
-                console.error(err);
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchReport();
     }, [caseData, authToken]);
 
-    if (loading) return <div style={{padding: '2rem', textAlign: 'center'}}><Loader2 className="animate-spin" /> Generating Master Report...</div>;
-    if (error) return <div style={{padding: '2rem', color: 'red'}}>Error: {error}</div>;
+    const fetchReport = async (retries = 2) => {
+        if (!caseData || !caseData.caseInfo) return;
+        setLoading(true);
+        setError(null);
+        try {
+            const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:3001' : 'https://risk-shield-mvp.vercel.app');
+            const res = await fetch(`${API_BASE_URL}/api/report/generate`, {
+                method: 'POST',
+                headers: { 
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ caseData })
+            });
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`Failed to fetch report: ${errorText || res.status}`);
+            }
+            const data = await res.json();
+            setReport(data);
+        } catch (err) {
+            console.error(err);
+            if (retries > 0) {
+                console.log(`Retrying report generation... (${retries} retries left)`);
+                setTimeout(() => fetchReport(retries - 1), 1000);
+            } else {
+                setError(err.message);
+                setLoading(false);
+            }
+        } finally {
+            if (retries === 0 || report) {
+                setLoading(false);
+            }
+        }
+    };
+
+    if (loading && !error) return <div style={{padding: '2rem', textAlign: 'center'}}><Loader2 className="animate-spin" /> Generating Master Report...</div>;
+    if (error) return (
+        <div style={{padding: '2rem', color: '#ef4444', textAlign: 'center'}}>
+            <AlertTriangle size={32} style={{margin: '0 auto', marginBottom: '1rem'}} />
+            <div>Error: {error}</div>
+            <button className="btn" onClick={() => fetchReport(2)} style={{marginTop: '1rem', background: '#3b82f6', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer'}}>
+                Retry Generation
+            </button>
+        </div>
+    );
     if (!report) return null;
 
     return (

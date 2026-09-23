@@ -379,14 +379,18 @@ router.post('/cases/:id/investigate/:accountId', requireAuth(), (req, res) => {
     res.json(result);
 });
 
-router.get('/cases/:id/report', requireAuth(), (req, res) => {
-    const c = InvestigationCaseManager.getCase(req.params.id);
-    if (!c) return res.status(404).json({error: 'Case not found'});
+router.post('/report/generate', requireAuth(), (req, res) => {
+    const caseData = req.body.caseData;
+    if (!caseData) return res.status(400).json({error: 'caseData is required'});
     
     const ReportBuilder = require('../services/ReportBuilder');
-    const report = ReportBuilder.generateCaseReport(c);
-    
-    res.json(report);
+    try {
+        const report = ReportBuilder.generateCaseReport(caseData);
+        res.json(report);
+    } catch (err) {
+        console.error("Report Generation Error:", err);
+        res.status(500).json({ error: 'Failed to generate report' });
+    }
 });
 
 module.exports = router;
