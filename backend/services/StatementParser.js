@@ -3,6 +3,7 @@ const xlsx = require('xlsx');
 const OcrSpaceService = require('./ocrSpaceService');
 const BankDetector = require('./parsers/BankDetector');
 const SBIParser = require('./parsers/SBIParser');
+const GenericTransactionNormalizer = require('./parsers/GenericTransactionNormalizer');
 const { normalizeDate } = require('../utils/dateUtils');
 const { Transaction } = require('../models/DataModels');
 
