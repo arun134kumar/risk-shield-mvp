@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import MoneyTrailGraph from '../components/MoneyTrailGraph';
 import { UploadCloud, Network, ShieldAlert, Loader2 } from 'lucide-react';
 import { useAnalysis } from '../context/AnalysisContext';
+import FinalReport from '../components/FinalReport';
 
 export default function CaseOverview({ data }) {
     const { authToken, setCaseData, setActiveTabId } = useAnalysis();
@@ -82,6 +83,11 @@ export default function CaseOverview({ data }) {
                             </div>
                         ))}
                     </div>
+                </div>
+
+                {/* Final Master Report */}
+                <div style={{gridColumn: '1 / -1'}}>
+                    <FinalReport />
                 </div>
 
                 {/* Money Trail Graph (Master) */}

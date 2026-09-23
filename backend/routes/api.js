@@ -380,4 +380,14 @@ router.post('/cases/:id/investigate/:accountId', requireAuth(), (req, res) => {
     res.json(result);
 });
 
+router.get('/cases/:id/report', requireAuth(), (req, res) => {
+    const c = InvestigationCaseManager.getCase(req.params.id);
+    if (!c) return res.status(404).json({error: 'Case not found'});
+    
+    const ReportBuilder = require('../services/ReportBuilder');
+    const report = ReportBuilder.generateCaseReport(c);
+    
+    res.json(report);
+});
+
 module.exports = router;
