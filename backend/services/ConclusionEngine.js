@@ -23,7 +23,7 @@ class ConclusionEngine {
         }
 
         // 1. Analyze Uploaded Account
-        let hasRapidMovement = patterns.some(p => p.type === 'rapid_transfer');
+        let hasRapidMovement = patterns.some(p => ['P03', 'P06', 'P07', 'P08', 'P09'].includes(p.type));
         let hasMultiHop = graphMetrics.multiHopChains && graphMetrics.multiHopChains.length > 0;
         let hasCashOut = atmMarkers && atmMarkers.length > 0;
         

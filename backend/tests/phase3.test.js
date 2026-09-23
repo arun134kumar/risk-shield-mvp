@@ -22,24 +22,24 @@ describe('Phase 3 Correctness Fixes', () => {
 
     test('Circular flow requires amount similarity and time window', () => {
         const txns = [
-            { id: '1', timestamp: new Date(2026, 8, 15).toISOString(), amount: 1000, type: 'CREDIT', sourceAccount: 'A', destAccount: 'B' },
-            { id: '2', timestamp: new Date(2026, 8, 16).toISOString(), amount: 1000, type: 'DEBIT', sourceAccount: 'B', destAccount: 'A' },
+            { id: '1', date: new Date(2026, 8, 15).toISOString(), amount: 1000, direction: 'CREDIT', sourceAccountId: 'A', counterpartyAccountId: 'B' },
+            { id: '2', date: new Date(2026, 8, 16).toISOString(), amount: 1000, direction: 'DEBIT', sourceAccountId: 'A', counterpartyAccountId: 'B' },
             // Not a circular flow due to amount diff > 5%
-            { id: '3', timestamp: new Date(2026, 8, 17).toISOString(), amount: 1000, type: 'CREDIT', sourceAccount: 'C', destAccount: 'D' },
-            { id: '4', timestamp: new Date(2026, 8, 18).toISOString(), amount: 800, type: 'DEBIT', sourceAccount: 'D', destAccount: 'C' },
+            { id: '3', date: new Date(2026, 8, 17).toISOString(), amount: 1000, direction: 'CREDIT', sourceAccountId: 'A', counterpartyAccountId: 'D' },
+            { id: '4', date: new Date(2026, 8, 18).toISOString(), amount: 800, direction: 'DEBIT', sourceAccountId: 'A', counterpartyAccountId: 'D' },
             // Not a circular flow due to time diff > 7 days
-            { id: '5', timestamp: new Date(2026, 8, 1).toISOString(), amount: 1000, type: 'CREDIT', sourceAccount: 'E', destAccount: 'F' },
-            { id: '6', timestamp: new Date(2026, 8, 10).toISOString(), amount: 1000, type: 'DEBIT', sourceAccount: 'F', destAccount: 'E' }
+            { id: '5', date: new Date(2026, 8, 1).toISOString(), amount: 1000, direction: 'CREDIT', sourceAccountId: 'A', counterpartyAccountId: 'F' },
+            { id: '6', date: new Date(2026, 8, 10).toISOString(), amount: 1000, direction: 'DEBIT', sourceAccountId: 'A', counterpartyAccountId: 'F' }
         ];
         
         const analyzer = new PatternAnalyzer(txns);
         const patterns = analyzer.analyze();
         
-        const circularFlows = patterns.filter(p => p.type === 'circular_flow');
-        // Only txns 1 and 2 should trigger it (2 signals, 1 for each side)
-        expect(circularFlows.length).toBe(2);
-        expect(circularFlows.find(p => p.txnId === '1')).toBeDefined();
-        expect(circularFlows.find(p => p.txnId === '2')).toBeDefined();
+        const circularFlows = patterns.filter(p => p.type === 'P12');
+        // Only txns 1 and 2 should trigger it (1 finding containing both txns)
+        expect(circularFlows.length).toBe(1);
+        expect(circularFlows[0].supportingTransactionIds.includes('1')).toBe(true);
+        expect(circularFlows[0].supportingTransactionIds.includes('2')).toBe(true);
     });
 
     test('Risk scaling uses rate instead of raw counts', () => {
