@@ -64,6 +64,26 @@ export default function CaseOverview({ data }) {
             </div>
 
             <div className="dashboard-grid">
+                {/* Timeline */}
+                <div className="glass-panel" style={{gridColumn: '1 / -1', marginBottom: '1.5rem'}}>
+                    <h3 style={{marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                        <ShieldAlert size={20} color="#3b82f6" /> Case Timeline
+                    </h3>
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+                        {data.timeline?.map((event, idx) => (
+                            <div key={idx} style={{display: 'flex', gap: '15px', alignItems: 'flex-start'}}>
+                                <div style={{minWidth: '150px', color: '#94a3b8', fontSize: '0.85rem'}}>
+                                    {new Date(event.timestamp).toLocaleString()}
+                                </div>
+                                <div>
+                                    <div style={{color: '#f8fafc'}}>{event.event}</div>
+                                    <div style={{color: '#64748b', fontSize: '0.8rem'}}>by {event.user}</div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 {/* Money Trail Graph (Master) */}
                 <div className="glass-panel" style={{gridColumn: '1 / -1'}}>
                     <h3 style={{marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px'}}>
