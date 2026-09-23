@@ -1,4 +1,5 @@
 const ComplaintProvider = require('./ComplaintProvider');
+const CounterpartyRanker = require('./CounterpartyRanker');
 
 class ConclusionEngine {
     static async generate(accountInfo, transactions, patterns, graphMetrics, atmMarkers, predictedHotspots) {
@@ -61,86 +62,19 @@ class ConclusionEngine {
         }
 
         // 2. Linked Accounts Analysis (B, C, D)
-        const linkedMap = new Map();
+        const rankedCandidates = await CounterpartyRanker.rank(transactions, patterns);
         
-        // Extract unique downstream counterparties
-        transactions.forEach(t => {
-            if (t.type === 'DEBIT' && t.destAccount && t.destAccount !== 'Uploaded Account' && t.destAccount !== 'Unknown Counterparty') {
-                if (!linkedMap.has(t.destAccount)) {
-                    linkedMap.set(t.destAccount, { 
-                        account: t.destAccount,
-                        fundsReceived: 0,
-                        txnCount: 0,
-                        role: 'Possible intermediary / cash-out account',
-                        riskSignals: []
-                    });
-                }
-                const entry = linkedMap.get(t.destAccount);
-                entry.fundsReceived += t.amount;
-                entry.txnCount += 1;
-                if (t.signals && t.signals.length > 0) {
-                    t.signals.forEach(s => {
-                        if (!entry.riskSignals.includes(s.type)) entry.riskSignals.push(s.type);
-                    });
-                }
-            }
-        });
-
-        // Resolve Complaint Status and calculate Priority Score
-        const candidates = [];
-        for (const [key, linked] of linkedMap.entries()) {
-            const complaintRes = await ComplaintProvider.checkStatus(linked.account);
-            linked.complaintStatus = complaintRes.status;
-            
-            let priorityScore = 0;
-
-            // Score based on funds received (e.g. 1 point per 1k)
-            priorityScore += Math.min(50, Math.floor(linked.fundsReceived / 1000));
-            // Score based on velocity/frequency
-            priorityScore += linked.txnCount * 5;
-            
-            // Add risk signals
-            if (complaintRes.status === 'KNOWN_CASE') {
-                linked.riskSignals.push('Linked to a known complaint/case');
-                priorityScore += 40;
-            } 
-            if (linked.fundsReceived > 50000) {
-                linked.riskSignals.push(`High volume of funds received: ₹${linked.fundsReceived.toLocaleString()}`);
-            }
-            if (hasRapidMovement) {
-                linked.riskSignals.push('Involved in rapid transfer chain');
-                priorityScore += 20;
-            }
-
-            linked.priorityScore = Math.min(100, priorityScore);
-            
-            let priorityLabel = 'LOW';
-            if (linked.priorityScore >= 80) priorityLabel = 'HIGH';
-            else if (linked.priorityScore >= 60) priorityLabel = 'MEDIUM/HIGH';
-            else if (linked.priorityScore >= 40) priorityLabel = 'MEDIUM';
-
-            linked.priority = priorityLabel;
-            linked.status = 'Candidate for Further Review';
-            
-            // Formulate actual reasons
-            linked.reasons = [
-                `Received ₹${linked.fundsReceived.toLocaleString()} across ${linked.txnCount} transactions.`
-            ];
-            if (linked.riskSignals.length > 0) {
-                linked.reasons.push(...linked.riskSignals);
-            }
-
-            candidates.push(linked);
-        }
-        
-        // Rank candidates
-        candidates.sort((a, b) => b.priorityScore - a.priorityScore);
-        
-        report.top3Candidates = candidates.slice(0, 3);
-        report.otherLinkedAccounts = candidates.slice(3).map(c => ({
+        report.top3Candidates = rankedCandidates.slice(0, 3).map(c => ({
             account: c.account,
-            status: c.status,
-            priority: c.priority,
+            status: 'Candidate for Further Review',
+            priority: c.priorityLabel,
+            reason: c.why.join(' ') || 'Elevated investigation priority based on available evidence.'
+        }));
+
+        report.otherLinkedAccounts = rankedCandidates.slice(3).map(c => ({
+            account: c.account,
+            status: 'Candidate for Further Review',
+            priority: c.priorityLabel,
             reason: 'Insufficient/high-level evidence compared with Top 3'
         }));
 
