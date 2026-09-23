@@ -94,16 +94,43 @@ export default function CaseOverview({ data }) {
                                     </div>
                                     
                                     {!isUploaded && (
-                                        <label style={{
-                                            background: 'rgba(59, 130, 246, 0.2)',
-                                            color: '#60a5fa', border: '1px solid #3b82f6', padding: '8px 16px',
-                                            borderRadius: '4px', cursor: uploadingFor === cp.account ? 'wait' : 'pointer',
-                                            display: 'flex', alignItems: 'center', gap: '8px'
-                                        }}>
-                                            {uploadingFor === cp.account ? <Loader2 size={16} className="animate-spin" /> : <UploadCloud size={16} />}
-                                            Upload Statement
-                                            <input type="file" style={{display: 'none'}} accept=".pdf,.csv,.xlsx" onChange={(e) => handleUploadForCounterparty(e, cp.account)} disabled={uploadingFor === cp.account} />
-                                        </label>
+                                        <div style={{display: 'flex', gap: '10px'}}>
+                                            <button 
+                                                onClick={async () => {
+                                                    try {
+                                                        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:3001' : 'https://risk-shield-mvp.vercel.app');
+                                                        const res = await fetch(`${API_BASE_URL}/api/cases/${data.caseInfo.id}/investigate/${cp.account}`, {
+                                                            method: 'POST',
+                                                            headers: { 'Authorization': `Bearer ${authToken}` }
+                                                        });
+                                                        const result = await res.json();
+                                                        console.log("Investigation Result:", result);
+                                                        alert(`Investigation Complete!\nPaths Found: ${result.summary.totalPaths}\nCycles Detected: ${result.summary.totalCycles}\nCash-out found: ${result.summary.cashOutFound}`);
+                                                    } catch (e) {
+                                                        alert("Failed to investigate");
+                                                    }
+                                                }}
+                                                style={{
+                                                    background: 'rgba(139, 92, 246, 0.2)',
+                                                    color: '#c4b5fd', border: '1px solid #8b5cf6', padding: '8px 16px',
+                                                    borderRadius: '4px', cursor: 'pointer',
+                                                    display: 'flex', alignItems: 'center', gap: '8px'
+                                                }}
+                                            >
+                                                <Network size={16} /> Investigate Trail
+                                            </button>
+
+                                            <label style={{
+                                                background: 'rgba(59, 130, 246, 0.2)',
+                                                color: '#60a5fa', border: '1px solid #3b82f6', padding: '8px 16px',
+                                                borderRadius: '4px', cursor: uploadingFor === cp.account ? 'wait' : 'pointer',
+                                                display: 'flex', alignItems: 'center', gap: '8px'
+                                            }}>
+                                                {uploadingFor === cp.account ? <Loader2 size={16} className="animate-spin" /> : <UploadCloud size={16} />}
+                                                Upload Statement
+                                                <input type="file" style={{display: 'none'}} accept=".pdf,.csv,.xlsx" onChange={(e) => handleUploadForCounterparty(e, cp.account)} disabled={uploadingFor === cp.account} />
+                                            </label>
+                                        </div>
                                     )}
                                 </div>
                             );

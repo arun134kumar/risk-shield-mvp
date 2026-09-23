@@ -447,4 +447,15 @@ router.post('/cases', requireAuth([ROLES.INVESTIGATOR, ROLES.ADMIN]), (req, res)
     res.json(newCase);
 });
 
+router.post('/cases/:id/investigate/:accountId', requireAuth(), (req, res) => {
+    const c = InvestigationCaseManager.getCase(req.params.id);
+    if (!c) return res.status(404).json({error: 'Case not found'});
+    
+    const MoneyTrailEngine = require('../services/MoneyTrailEngine');
+    const engine = new MoneyTrailEngine(c.transactions);
+    const result = engine.investigate(req.params.accountId);
+    
+    res.json(result);
+});
+
 module.exports = router;
