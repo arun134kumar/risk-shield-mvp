@@ -24,7 +24,7 @@ export default function Dashboard() {
           setIsLoadingNext(true);
           try {
               // Fetch Round 2 demo data
-              const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+              const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:3001' : 'https://risk-shield-mvp.vercel.app');
               const res = await fetch(`${API_BASE_URL}/api/demo?round=2`, {
                   headers: { 'Authorization': `Bearer ${authToken}` }
               });

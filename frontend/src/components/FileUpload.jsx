@@ -57,7 +57,7 @@ export default function FileUpload() {
     const formData = new FormData();
     formData.append('file', file);
 
-    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:3001' : 'https://risk-shield-mvp.vercel.app');
     try {
       const res = await fetch(`${API_BASE_URL}/api/upload`, {
         method: 'POST',
@@ -95,7 +95,7 @@ export default function FileUpload() {
     setCurrentStep(0);
     setError(null);
 
-    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:3001' : 'https://risk-shield-mvp.vercel.app');
     try {
       const res = await fetch(`${API_BASE_URL}/api/demo`, {
         method: 'POST',
