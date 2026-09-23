@@ -9,6 +9,10 @@ class Case {
         this.investigatorNotes = investigatorNotes || '';
         this.dataQuality = dataQuality || 'UNKNOWN';
         this.reportVersion = reportVersion || '1.0';
+        this.statements = [];
+        this.transactions = [];
+        this.findings = [];
+        this.timeline = [];
     }
 }
 
