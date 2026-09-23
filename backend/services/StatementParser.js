@@ -3,8 +3,8 @@ const xlsx = require('xlsx');
 const OcrSpaceService = require('./ocrSpaceService');
 const BankDetector = require('./parsers/BankDetector');
 const SBIParser = require('./parsers/SBIParser');
-const GenericTransactionNormalizer = require('./parsers/GenericTransactionNormalizer');
 const { normalizeDate } = require('../utils/dateUtils');
+const { Transaction } = require('../models/DataModels');
 
 class StatementParser {
     static async parse(buffer, mimetype, originalName) {
@@ -269,26 +269,34 @@ class StatementParser {
                     const utrMatch = description.match(/(?:UTR|REF|RRN)[\s\-\:]*([A-Za-z0-9]{8,20})/i);
                     if (utrMatch) utr = utrMatch[1];
 
-                    transactions.push({
+                    transactions.push(new Transaction({
                         id: 'TXN-PDF-' + Date.now() + '-' + idCounter++,
-                        caseId: null,
+                        statementId: null,
+                        sourceAccountId: source,
+                        counterpartyAccountId: dest,
+                        date: normalizeDate(date) || date,
+                        valueDate: date,
+                        postDate: null,
+                        amount: amount,
+                        debit: debit,
+                        credit: credit,
+                        direction: type,
+                        transactionType: null,
+                        paymentMode: null,
+                        referenceId: utr,
+                        transactionReference: utr,
+                        description: description || 'Needs verification',
+                        narration: description,
                         sender: source,
                         receiver: dest,
-                        UTR: utr,
-                        RRN: utr,
-                        timestamp: normalizeDate(date) || date,
-                        amount: amount,
-                        type: type,
-                        narration: description,
-                        bank: 'UNKNOWN',
-                        location: null,
-                        atmId: null,
-                        description: description || 'Needs verification',
-                        sourceAccount: source,
-                        destAccount: dest,
+                        counterparty: type === 'DEBIT' ? dest : source,
+                        bankCode: 'UNKNOWN',
+                        upiId: null,
                         balance: balance || 0,
-                        riskScore: 0
-                    });
+                        balanceAfter: balance || 0,
+                        location: null,
+                        parserConfidence: 0.8
+                    }));
                 }
 
             }
@@ -352,26 +360,34 @@ class StatementParser {
                     if (utrMatch) utr = utrMatch[1];
                 }
 
-                normalized.push({
+                normalized.push(new Transaction({
                     id: row['Ref No'] || row['Reference'] || row['Txn Id'] || 'TXN-CSV-' + Date.now() + '-' + idCounter++,
-                    caseId: null,
+                    statementId: null,
+                    sourceAccountId: source,
+                    counterpartyAccountId: dest,
+                    date: normalizeDate(dateStr) || dateStr,
+                    valueDate: dateStr,
+                    postDate: null,
+                    amount: amount,
+                    debit: debit,
+                    credit: credit,
+                    direction: type,
+                    transactionType: null,
+                    paymentMode: null,
+                    referenceId: utr,
+                    transactionReference: utr,
+                    description: desc,
+                    narration: desc,
                     sender: source,
                     receiver: dest,
-                    UTR: utr,
-                    RRN: utr,
-                    timestamp: normalizeDate(dateStr) || dateStr,
-                    amount: amount,
-                    type: type,
-                    narration: desc,
-                    bank: row.Bank || 'UNKNOWN',
-                    location: row.Location || null,
-                    atmId: row.AtmId || null,
-                    description: desc,
-                    sourceAccount: source,
-                    destAccount: dest,
+                    counterparty: type === 'DEBIT' ? dest : source,
+                    bankCode: row.Bank || 'UNKNOWN',
+                    upiId: null,
                     balance: parseFloat(row.Balance || row.balance || 0),
-                    riskScore: 0
-                });
+                    balanceAfter: parseFloat(row.Balance || row.balance || 0),
+                    location: row.Location || null,
+                    parserConfidence: 1.0
+                }));
             }
         });
         
