@@ -24,7 +24,8 @@ export default function Dashboard() {
           setIsLoadingNext(true);
           try {
               // Fetch Round 2 demo data
-              const res = await fetch('http://localhost:3001/api/demo?round=2', {
+              const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+              const res = await fetch(`${API_BASE_URL}/api/demo?round=2`, {
                   headers: { 'Authorization': `Bearer ${authToken}` }
               });
               const json = await res.json();

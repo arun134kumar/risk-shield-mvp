@@ -49,7 +49,8 @@ export default function Landing() {
               onClick={async () => {
                   try {
                       // Fetch demo dataset from backend
-                      const res = await fetch('http://localhost:3001/api/demo', {
+                      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+                      const res = await fetch(`${API_BASE_URL}/api/demo`, {
                           headers: { 'Authorization': `Bearer ${authToken}` }
                       });
                       const json = await res.json();

@@ -10,15 +10,18 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Restrict CORS
-const allowedOrigins = ['http://localhost:5173', 'https://arun134kumar.github.io'];
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000', 'https://arun134kumar.github.io'];
 app.use(cors({
     origin: function(origin, callback){
         if(!origin) return callback(null, true);
         if(allowedOrigins.indexOf(origin) === -1){
-            return callback(new Error('CORS policy violation'), false);
+            // Instead of throwing an error, we just return false to block it gracefully
+            return callback(null, false);
         }
         return callback(null, true);
-    }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(bodyParser.json());
 
@@ -32,6 +35,19 @@ app.use('/api/', limiter);
 // Routes
 app.use('/api', apiRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+// Health Endpoints
+app.get('/api/health', (req, res) => {
+    res.status(200).json({ status: 'ok', service: 'RiskShield API' });
 });
+
+app.get('/', (req, res) => {
+    res.status(200).json({ status: 'ok', service: 'RiskShield API' });
+});
+
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;

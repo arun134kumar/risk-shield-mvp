@@ -57,8 +57,9 @@ export default function FileUpload() {
     const formData = new FormData();
     formData.append('file', file);
 
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
     try {
-      const res = await fetch('http://localhost:3001/api/upload', {
+      const res = await fetch(`${API_BASE_URL}/api/upload`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`
@@ -72,16 +73,19 @@ export default function FileUpload() {
         setAnalysisData(result.data);
 
         simulateSteps(() => {
-
           navigate('/dashboard');
         });
       } else {
-        const data = await res.json();
-        throw new Error(data.error || 'Failed to upload data');
+        const text = await res.text();
+        throw new Error(`API Error ${res.status}: ${text}`);
       }
     } catch (err) {
       console.error(err);
-      setError(err.message || "An error occurred during upload. Check if backend is running.");
+      let errorMsg = err.message;
+      if (errorMsg === 'Failed to fetch') {
+        errorMsg = `Network Error (Failed to fetch). The backend at ${API_BASE_URL} might be unreachable or blocking CORS.`;
+      }
+      setError(errorMsg || "An error occurred during upload. Check if backend is running.");
       setLoading(false);
     }
   };
@@ -91,8 +95,9 @@ export default function FileUpload() {
     setCurrentStep(0);
     setError(null);
 
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
     try {
-      const res = await fetch('http://localhost:3001/api/demo', {
+      const res = await fetch(`${API_BASE_URL}/api/demo`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`
