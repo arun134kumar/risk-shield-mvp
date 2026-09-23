@@ -97,86 +97,8 @@ async function generateDashboardData(parsedData) {
         }
     }
 
-    // 5. Extract and Geocode ATM Withdrawals
-    const atmMarkers = [];
-    const atmGroups = new Map();
-    // Only capture explicit ATM or CASH WITHDRAWAL, not generic WDL which could be UPI
-    const atmPatterns = /ATM\b|\bCASH WITHDRAWAL\b|\bATM WDL\b|\bMICRO ATM\b|\bCASH DISPENSE\b/i;
-    
-    for (const t of transactions) {
-        if (t.type === 'DEBIT' && atmPatterns.test(t.description) && !t.description.match(/UPI\//i)) {
-            let locStr = null;
-            let match = t.description.match(/LOCATION:?\s*([A-Za-z0-9\s]+)/i);
-            if (match) {
-                locStr = match[1].trim();
-            } else {
-                match = t.description.match(/ AT (.*)/i);
-                if (match) {
-                    locStr = match[1].trim();
-                } else {
-                    const parts = t.description.split(/[-/]/);
-                    if (parts.length > 1) {
-                        locStr = parts[parts.length - 1].trim();
-                    } else {
-                        const words = t.description.trim().split(/\s+/);
-                        const lastWord = words[words.length - 1];
-                        if (lastWord.length > 3 && !/\d/.test(lastWord)) locStr = lastWord;
-                    }
-                }
-            }
-            
-            // Sanitize locStr
-            if (locStr) {
-                locStr = locStr.replace(/ATM|CASH|WITHDRAWAL/gi, '').trim();
-                if (locStr.length < 3) locStr = null;
-            }
-            
-            let atmId = null;
-            let idMatch = t.description.match(/ATM\s*(?:ID:?)?\s*([A-Z0-9]{4,})/i);
-            if (idMatch) atmId = idMatch[1];
-            
-            const key = locStr || atmId || t.description;
-            if (!atmGroups.has(key)) {
-                atmGroups.set(key, { transactions: [], locationStr: locStr, atmId: atmId, lat: null, lng: null, resolved: false, displayName: null });
-            }
-            atmGroups.get(key).transactions.push(t);
-        }
-    }
-    
-    // Geocode locations sequentially to avoid spamming Nominatim
-    for (const [key, group] of atmGroups.entries()) {
-        if (group.locationStr) {
-            const coords = await geocodeAddress(group.locationStr);
-            if (coords) {
-                group.lat = coords.lat;
-                group.lng = coords.lng;
-                group.resolved = true;
-                group.displayName = coords.displayName;
-            }
-        }
-        
-        let total = 0;
-        let maxRisk = 0;
-        group.transactions.forEach(t => { 
-            total += t.amount;
-            if (t.riskScore > maxRisk) maxRisk = t.riskScore;
-        });
-        
-        atmMarkers.push({
-            id: key,
-            atmId: group.atmId || 'Unknown ID',
-            originalLocationStr: group.locationStr,
-            displayName: group.displayName || 'Location Unavailable',
-            lat: group.lat,
-            lng: group.lng,
-            resolved: group.resolved,
-            withdrawalsCount: group.transactions.length,
-            totalWithdrawn: total,
-            maxRisk: maxRisk,
-            transactions: group.transactions
-        });
-    }
-
+    const GeospatialRisk = require('../services/GeospatialRisk');
+    const atmMarkers = await GeospatialRisk.extractAtmMarkers(transactions, geocodeAddress);
     console.log(`[RiskShield] Analysis completed. Resolved ATMs: ${atmMarkers.filter(m => m.resolved).length}/${atmMarkers.length}`);
 
     const GraphEngine = require('../services/GraphEngine');
