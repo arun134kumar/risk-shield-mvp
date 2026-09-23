@@ -106,7 +106,6 @@ async function generateDashboardData(parsedData) {
     const graphData = graphEngine.getGraphData();
     
     const MLPredictor = require('../services/MLPredictor');
-    const GeospatialRisk = require('../services/GeospatialRisk');
     const ConclusionEngine = require('../services/ConclusionEngine');
     
     // Get top predicted hotspots
