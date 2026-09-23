@@ -1,36 +1,48 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { AlertCircle, Map as MapIcon, Activity, FileText, Download, Network, ShieldCheck, ShieldAlert, FileSearch, CheckCircle2 } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { AlertCircle, Map as MapIcon, Activity, FileText, Download, Network, ShieldCheck, ShieldAlert, FileSearch, CheckCircle2, Loader2 } from 'lucide-react';
 import EvidencePanel from '../components/EvidencePanel';
 import MoneyTrailGraph from '../components/MoneyTrailGraph';
 import AtmMap from '../components/AtmMap';
+import FinalReport from '../components/FinalReport';
+import { useAnalysis } from '../context/AnalysisContext';
 
 export default function Dashboard() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { analysisData, setAnalysisData, authToken } = useAnalysis();
+  const data = analysisData || {};
+  const loading = false;
   
   const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState('ALL');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTxn, setSelectedTxn] = useState(null);
+  const [isLoadingNext, setIsLoadingNext] = useState(false);
   
   const itemsPerPage = 10;
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const savedData = localStorage.getItem('riskShieldAnalysis');
+      const handleUploadStatement = async (e) => {
+          setIsLoadingNext(true);
+          try {
+              // Fetch Round 2 demo data
+              const res = await fetch('http://localhost:3001/api/demo?round=2', {
+                  headers: { 'Authorization': `Bearer ${authToken}` }
+              });
+              const json = await res.json();
+              if (json.data) {
+                  setAnalysisData(json.data);
+                  window.scrollTo(0, 0);
+              }
+          } catch (err) {
+              console.error('Failed to load next round', err);
+          } finally {
+              setIsLoadingNext(false);
+          }
+      };
 
-        if (savedData) {
-          setData(JSON.parse(savedData));
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+      window.addEventListener('upload-statement', handleUploadStatement);
+      return () => window.removeEventListener('upload-statement', handleUploadStatement);
+  }, [authToken, setAnalysisData]);
+
 
   const handlePrint = () => {
       window.print();
@@ -62,9 +74,10 @@ export default function Dashboard() {
   const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
 
   if (loading) return <div style={{textAlign: 'center', marginTop: '4rem'}}>Analyzing risk signals...</div>;
-  if (!data || data.error) return <div style={{textAlign: 'center', marginTop: '4rem'}}>No data found. Go upload a statement first.</div>;
+  if (!analysisData || analysisData.error) return <div style={{textAlign: 'center', marginTop: '4rem'}}>No data found. Go upload a statement first.</div>;
+  if (isLoadingNext) return <div style={{textAlign: 'center', marginTop: '4rem', color: '#60a5fa'}}><Loader2 className="animate-spin" size={48} style={{margin: '0 auto 20px'}}/> <h2>Analyzing uploaded statement and recalculating chain...</h2></div>;
 
-  const hasParseError = data.summary.totalTransactions === 0;
+  const hasParseError = data.summary?.totalTransactions === 0;
 
   return (
     <div className="animate-fade-in printable-report">
@@ -98,6 +111,14 @@ export default function Dashboard() {
                   <div><span style={{color: '#94a3b8'}}>Parsing Status:</span> <strong style={{color: hasParseError ? '#ef4444' : '#10b981'}}>{hasParseError ? 'Failed' : 'Success'}</strong></div>
                   <div><span style={{color: '#94a3b8'}}>Confidence:</span> <strong style={{color: data.metadata.parsingConfidence === 'High' ? '#10b981' : (data.metadata.parsingConfidence === 'Medium' ? '#f59e0b' : '#ef4444')}}>{data.metadata.parsingConfidence}</strong></div>
               </div>
+              {data.metadata.fileHash && (
+                  <div style={{marginTop: '15px', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.1)', fontSize: '0.8rem', color: '#94a3b8'}}>
+                      <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                          <span><strong>Evidence SHA-256:</strong> {data.metadata.fileHash}</span>
+                          <span><strong>Uploaded By:</strong> {data.metadata.uploadedBy} at {new Date(data.metadata.uploadedAt).toLocaleString()}</span>
+                      </div>
+                  </div>
+              )}
           </div>
       )}
 
@@ -162,15 +183,15 @@ export default function Dashboard() {
           </div>
           <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem'}}>
             <span style={{color: '#94a3b8'}}>High Risk Flags:</span>
-            <strong style={{color: '#ef4444'}}>{data.summary.highRiskCount}</strong>
+            <strong style={{color: '#ef4444'}}>{data.summary?.highRiskCount || 0}</strong>
           </div>
           <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', marginTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '0.5rem'}}>
             <span style={{color: '#94a3b8'}}>Risk Score:</span>
-            <strong style={{color: data.summary.overallRiskScore > 40 ? '#ef4444' : '#10b981', fontSize: '1.2rem'}}>{data.summary.overallRiskScore}/100</strong>
+            <strong style={{color: (data.summary?.overallRiskScore || 0) > 40 ? '#ef4444' : '#10b981', fontSize: '1.2rem'}}>{data.summary?.overallRiskScore || 0}/100</strong>
           </div>
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
             <span style={{color: '#94a3b8'}}>Risk Level:</span>
-            <strong style={{color: data.summary.overallRiskScore > 40 ? '#ef4444' : '#10b981', textTransform: 'uppercase'}}>{data.summary.overallRiskLevel}</strong>
+            <strong style={{color: (data.summary?.overallRiskScore || 0) > 40 ? '#ef4444' : '#10b981', textTransform: 'uppercase'}}>{data.summary?.overallRiskLevel || 'LOW'}</strong>
           </div>
         </div>
 
@@ -297,11 +318,16 @@ export default function Dashboard() {
         {/* Map View */}
         <div className="glass-panel" style={{gridColumn: '1 / -1'}}>
           <h3 style={{marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px'}}>
-            <MapIcon size={20} color="#06b6d4" /> ATM Withdrawals Map
+            <MapIcon size={20} color="#06b6d4" /> ATM Withdrawals Map & Cash-out Prediction
           </h3>
-          <AtmMap data={data.atmMarkers} />
+          <AtmMap 
+            data={data.atmMarkers} 
+            predictedHotspots={data.predictedHotspots}
+          />
         </div>
       </div>
+
+      <FinalReport data={data.finalReport} />
       
       <EvidencePanel transaction={selectedTxn} onClose={() => setSelectedTxn(null)} />
       

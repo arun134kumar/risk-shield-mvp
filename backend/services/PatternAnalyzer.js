@@ -1,3 +1,5 @@
+const thresholds = require('../config/thresholds');
+
 class PatternAnalyzer {
     constructor(transactions) {
         // Sort transactions by date if possible
@@ -36,7 +38,7 @@ class PatternAnalyzer {
         this.transactions.forEach(txn => {
             const amountStr = txn.amount.toString();
             if (txn.amount >= 100 && amountStr.includes('.') && !amountStr.endsWith('.00')) {
-                this.addSignal(txn.id, 'decimal_pattern', 10, 'Non-round / Decimal amount pattern detected.');
+                this.addSignal(txn.id, 'decimal_pattern', thresholds.SIGNALS.DECIMAL_PATTERN, 'Non-round / Decimal amount pattern detected.');
             }
         });
     }
@@ -51,7 +53,7 @@ class PatternAnalyzer {
                         const timeDiffMs = new Date(outTxn.timestamp) - new Date(inTxn.timestamp);
                         if (timeDiffMs >= 0 && timeDiffMs < 24 * 60 * 60 * 1000) { 
                             if (outTxn.amount >= inTxn.amount * 0.8 && outTxn.amount <= inTxn.amount * 1.2) {
-                                this.addSignal(outTxn.id, 'rapid_transfer', 15, `Rapid outward transfer shortly after credit.`);
+                                this.addSignal(outTxn.id, 'rapid_transfer', thresholds.SIGNALS.RAPID_TRANSFER, `Rapid outward transfer shortly after credit.`);
                                 break;
                             }
                         }
@@ -79,7 +81,7 @@ class PatternAnalyzer {
                     } else {
                         if (currentSplitGroup.length >= 3 && currentSplitGroup.length <= 10 && (runningSum % 1000 === 0 || runningSum > 50000)) {
                             currentSplitGroup.forEach(t => {
-                                this.addSignal(t.id, 'splitting', 20, `Possible transaction splitting (Group total: ${runningSum}).`);
+                                this.addSignal(t.id, 'splitting', thresholds.SIGNALS.SPLITTING, `Possible transaction splitting (Group total: ${runningSum}).`);
                             });
                         }
                         currentSplitGroup = [txn];
@@ -101,7 +103,7 @@ class PatternAnalyzer {
             const txns = amountMap[amt];
             if (txns.length >= 4) {
                 txns.forEach(t => {
-                    this.addSignal(t.id, 'amount_cluster', 10, `Amount clustering: ${txns.length} transactions of ${amt}.`);
+                    this.addSignal(t.id, 'amount_cluster', thresholds.SIGNALS.AMOUNT_CLUSTER, `Amount clustering: ${txns.length} transactions of ${amt}.`);
                 });
             }
         });
@@ -117,8 +119,8 @@ class PatternAnalyzer {
         });
         
         this.transactions.forEach(txn => {
-            if (txn.type === 'DEBIT' && receiverMap[txn.destAccount] >= 4) {
-                this.addSignal(txn.id, 'multi_sender', 20, `Multi-sender / High volume to same receiver.`);
+            if (txn.type === 'DEBIT' && txn.destAccount !== 'Unknown Counterparty' && receiverMap[txn.destAccount] >= 4) {
+                this.addSignal(txn.id, 'multi_sender', thresholds.SIGNALS.MULTI_SENDER, `Multi-sender / High volume to same receiver.`);
             }
         });
     }
@@ -136,7 +138,7 @@ class PatternAnalyzer {
                 } else {
                     if (windowTxns.length >= 8) {
                         windowTxns.forEach(t => {
-                            this.addSignal(t.id, 'time_window', 10, `High velocity: ${windowTxns.length} transactions within 1 hour.`);
+                            this.addSignal(t.id, 'time_window', thresholds.SIGNALS.TIME_WINDOW, `High velocity: ${windowTxns.length} transactions within 1 hour.`);
                         });
                     }
                     windowTxns = [txn];
@@ -158,7 +160,7 @@ class PatternAnalyzer {
         this.transactions.forEach(txn => {
             const pair = `${txn.sourceAccount}-${txn.destAccount}`;
             if (pairMap[pair] >= 5) {
-                this.addSignal(txn.id, 'repeated_txn', 15, `Highly repeated transaction between same counterparties.`);
+                this.addSignal(txn.id, 'repeated_txn', thresholds.SIGNALS.REPEATED_TXN, `Highly repeated transaction between same counterparties.`);
             }
         });
     }
@@ -178,9 +180,13 @@ class PatternAnalyzer {
             
             for (let j = i + 1; j < Math.min(i + 50, this.transactions.length); j++) {
                 const txnB = this.transactions[j];
-                if (txnA.sourceAccount === txnB.destAccount && txnA.destAccount === txnB.sourceAccount) {
-                    this.addSignal(txnA.id, 'circular_flow', 25, `Possible circular flow detected.`);
-                    this.addSignal(txnB.id, 'circular_flow', 25, `Possible circular flow detected.`);
+                // Require amount similarity (within 5%) and time window (< 7 days)
+                const timeDiffDays = Math.abs(new Date(txnB.timestamp) - new Date(txnA.timestamp)) / (1000 * 60 * 60 * 24);
+                const amountDiff = Math.abs(txnA.amount - txnB.amount) / Math.max(txnA.amount, txnB.amount);
+                
+                if (txnA.sourceAccount === txnB.destAccount && txnA.destAccount === txnB.sourceAccount && timeDiffDays < 7 && amountDiff < 0.05) {
+                    this.addSignal(txnA.id, 'circular_flow', thresholds.SIGNALS.CIRCULAR_FLOW, `Possible circular flow detected.`);
+                    this.addSignal(txnB.id, 'circular_flow', thresholds.SIGNALS.CIRCULAR_FLOW, `Possible circular flow detected.`);
                 }
             }
         }

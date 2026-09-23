@@ -14,11 +14,13 @@ const multer = require('multer');
 const StatementParser = require('../services/StatementParser');
 const PatternAnalyzer = require('../services/PatternAnalyzer');
 const calculateRiskScore = require('../services/riskScoring');
+const CaseManager = require('../services/CaseManager');
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-let currentAnalysis = null;
+const upload = multer({ 
+    storage: storage,
+    limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
+});
 
 async function generateDashboardData(parsedData) {
     let transactions = parsedData.transactions;
@@ -177,7 +179,42 @@ async function generateDashboardData(parsedData) {
 
     console.log(`[RiskShield] Analysis completed. Resolved ATMs: ${atmMarkers.filter(m => m.resolved).length}/${atmMarkers.length}`);
 
+    const GraphEngine = require('../services/GraphEngine');
+    const graphEngine = new GraphEngine(transactions);
+    const graphData = graphEngine.getGraphData();
+    
+    const MLPredictor = require('../services/MLPredictor');
+    const GeospatialRisk = require('../services/GeospatialRisk');
+    const ConclusionEngine = require('../services/ConclusionEngine');
+    
+    // Get top predicted hotspots
+
+    const predictedHotspots = GeospatialRisk.getTopPredictedHotspots(atmMarkers, MLPredictor, graphData.metrics);
+    
+    // Auto-generate alerts for high-risk hotspots
+    const generatedAlerts = [];
+    predictedHotspots.forEach(hs => {
+        if (hs.riskScore >= 80) {
+            generatedAlerts.push({
+                type: 'CASH_OUT_HOTSPOT',
+                riskScore: hs.riskScore,
+                hotspot: hs.location,
+                reason: `ML model detected ${hs.riskScore}% cash-out probability at ${hs.location}. Signals: ${hs.signals}`
+            });
+        }
+    });
+
+    const finalReport = await ConclusionEngine.generate(
+        accountInfo,
+        transactions,
+        patterns,
+        graphData.metrics,
+        atmMarkers,
+        predictedHotspots
+    );
+
     return {
+
         accountInfo,
         metadata,
         summary: {
@@ -197,11 +234,17 @@ async function generateDashboardData(parsedData) {
         patterns: patterns,
         transactions: transactions,
         highRiskTransactions: riskResult.highRiskTransactions,
-        atmMarkers: atmMarkers
+        atmMarkers: atmMarkers,
+        predictedHotspots: predictedHotspots,
+        alerts: generatedAlerts,
+        graphData: graphData,
+        finalReport: finalReport
     };
 }
 
-router.post('/upload', upload.single('file'), async (req, res) => {
+const { requireAuth, ROLES } = require('../middleware/auth');
+
+router.post('/upload', requireAuth([ROLES.INVESTIGATOR, ROLES.ADMIN]), upload.single('file'), async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'No file uploaded' });
@@ -210,12 +253,27 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         // 1. Parse File
         const parsedData = await StatementParser.parse(req.file.buffer, req.file.mimetype, req.file.originalname);
         
-        currentAnalysis = await generateDashboardData(parsedData);
+        const analysisResult = await generateDashboardData(parsedData);
+        
+        let attachedCase = null;
+        let fileHash = null;
+        if (req.file) {
+            const crypto = require('crypto');
+            fileHash = crypto.createHash('sha256').update(req.file.buffer).digest('hex');
+            analysisResult.metadata.fileHash = fileHash;
+            analysisResult.metadata.uploadedBy = req.user ? req.user.role : 'System';
+            analysisResult.metadata.uploadedAt = new Date().toISOString();
+        }
+
+        if (req.body.caseId) {
+            attachedCase = CaseManager.addEvidence(req.body.caseId, req.file.originalname, req.file.buffer, analysisResult);
+        }
         
         res.json({
     status: 'success',
     message: 'Analysis complete.',
-    data: currentAnalysis
+    data: analysisResult,
+    caseData: attachedCase
 });
     } catch (err) {
         console.error("Upload Error:", err.message);
@@ -264,22 +322,117 @@ router.post('/demo', async (req, res) => {
             }
         };
 
-        currentAnalysis = await generateDashboardData(parsedData);
+        const analysisResult = await generateDashboardData(parsedData);
         res.json({
     status: 'success',
     message: 'Demo data generated.',
-    data: currentAnalysis
+    data: analysisResult
 });
     } catch (err) {
         res.status(500).json({ error: 'Failed to start demo.' });
     }
 });
 
-router.get('/analyze', (req, res) => {
-    if (!currentAnalysis) {
-        return res.status(400).json({ error: 'No data to analyze' });
+router.get('/demo', requireAuth([ROLES.INVESTIGATOR, ROLES.ADMIN]), async (req, res) => {
+    try {
+        const fs = require('fs');
+        const path = require('path');
+        const dataPath = path.join(__dirname, '../data/synthetic_dataset.json');
+        
+        if (!fs.existsSync(dataPath)) {
+            return res.status(404).json({ error: 'Demo dataset not found' });
+        }
+        
+        const syntheticData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+        
+        // Pass transactions through normalization to generate ML/Geo/Graph data
+        // For demo, we assume the dataset is already normalized transactions
+        const transactions = syntheticData.transactions;
+        
+        const round = req.query.round || '1';
+
+        // Mock account info for Round 1
+        let accountInfo = {
+            name: "Demo Victim A",
+            accountNumber: "XXXXXXXX1234",
+            bank: "Demo Bank",
+            branch: "Koramangala",
+            ifsc: "DEMO0001234",
+            openingBalance: 150000,
+            closingBalance: 50101,
+            statementPeriod: "Demo Period"
+        };
+        
+        let metadata = {
+            fileName: 'synthetic_dataset_A.json',
+            pagesProcessed: 1,
+            transactionsFound: transactions.length,
+            fileHash: 'demo-hash-12345',
+            uploadedBy: 'System',
+            uploadedAt: new Date().toISOString()
+        };
+
+        if (round === '2') {
+            // Filter transactions to simulate B's statement
+            // In a real scenario, this would be a separate file. For demo, we just manipulate the existing synthetic data
+            // to show B as the sender, and introduce a new downstream C.
+            accountInfo = {
+                name: "Suspicious User A (Candidate B)",
+                accountNumber: "XXXXXXXX5555",
+                bank: "Unknown Bank",
+                branch: "Unknown",
+                ifsc: "UNKN0000000",
+                openingBalance: 0,
+                closingBalance: 0,
+                statementPeriod: "Demo Period"
+            };
+            
+            transactions = transactions.map(t => {
+                if (t.destAccount === 'Suspicious User A') {
+                    // Reverse the flow to look like it came INTO B's account
+                    return { ...t, type: 'CREDIT', sourceAccount: 'Demo Victim A', destAccount: 'Uploaded Account' };
+                }
+                // Convert some random transactions to debit to a new candidate C
+                if (t.amount > 10000 && t.type === 'DEBIT') {
+                    return { ...t, destAccount: 'Cash-out Mule C' };
+                }
+                return t;
+            });
+            
+            metadata.fileName = 'statement_candidate_B.json';
+        }
+
+
+        const analysisResult = await generateDashboardData({
+            transactions: transactions,
+            accountInfo: accountInfo,
+            metadata: metadata
+        });
+        
+        res.json({
+            status: 'success',
+            message: 'Loaded offline demo data.',
+            data: analysisResult
+        });
+    } catch (err) {
+        console.error("Demo Error:", err.message);
+        res.status(500).json({ error: err.message });
     }
-    res.json(currentAnalysis);
+});
+
+router.get('/cases', requireAuth(), (req, res) => {
+    res.json(CaseManager.getAllCases(req.user.id, req.user.role));
+});
+
+router.get('/cases/:id', requireAuth(), (req, res) => {
+    const c = CaseManager.getCase(req.params.id, req.user.id, req.user.role);
+    if (!c) return res.status(404).json({error: 'Case not found or access denied'});
+    res.json(c);
+});
+
+router.post('/cases', requireAuth([ROLES.INVESTIGATOR, ROLES.ADMIN]), (req, res) => {
+    const newCase = CaseManager.createCase({ ...req.body, createdBy: req.user.id });
+    res.json(newCase);
 });
 
 module.exports = router;

@@ -1,3 +1,5 @@
+const { normalizeDate } = require('../../utils/dateUtils');
+
 class GenericTransactionNormalizer {
     /**
      * Normalizes bank-specific transaction objects into the generic format used by the dashboard.
@@ -25,19 +27,38 @@ class GenericTransactionNormalizer {
             // If it's a UPI transaction, we ensure it doesn't get flagged as ATM just because WDL is present
             let description = txn.narration;
             
+            // Extract UTR/RRN if available
+            let utr = txn.transactionId || null;
+            if (!utr) {
+                const utrMatch = description.match(/(?:UTR|REF|RRN)[\s\-\:]*([A-Za-z0-9]{8,20})/i);
+                if (utrMatch) utr = utrMatch[1];
+            }
+
             return {
                 id: txn.id || 'TXN-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
-                timestamp: txn.valueDate,
-                description: description,
+                caseId: null, // to be populated later
+                sender: sourceAccount,
+                receiver: destAccount,
+                UTR: utr,
+                RRN: utr, // often interchangeable in statements
                 amount: amount,
+                timestamp: normalizeDate(txn.valueDate) || txn.valueDate,
                 type: type,
+                narration: description,
+                bank: 'SBI', // known in this parser
+                location: null,
+                atmId: null,
+                // Extra context kept for backward compatibility with frontend
+                description: description,
                 sourceAccount: sourceAccount,
                 destAccount: destAccount,
                 balance: txn.balance,
-                paymentMode: txn.paymentMode, // keep for extra context
-                transactionType: txn.transactionType // keep for extra context
+                paymentMode: txn.paymentMode,
+                transactionType: txn.transactionType,
+                riskScore: 0
             };
         });
+
     }
 }
 

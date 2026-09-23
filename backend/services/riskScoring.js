@@ -1,6 +1,9 @@
+const thresholds = require('../config/thresholds');
+
 const calculateRiskScore = (transactions) => {
     let maxRisk = 0;
     
+    // Calculate transaction-level risk
     transactions.forEach(txn => {
         let score = 0;
         
@@ -17,15 +20,23 @@ const calculateRiskScore = (transactions) => {
         }
     });
     
+    // Calculate case/account-level risk (rate-based instead of single worst txn)
+    const highRiskTxnCount = transactions.filter(t => t.riskScore >= thresholds.TRANSACTION.MEDIUM).length;
+    const totalTxns = transactions.length > 0 ? transactions.length : 1;
+    const highRiskRatio = highRiskTxnCount / totalTxns;
+    
+    // Base case risk on the max transaction risk, but scaled by frequency of high risk txns
+    let caseRiskScore = Math.min(100, Math.floor(maxRisk * 0.5 + (highRiskRatio * 100) * 0.5));
+    
     let overallRiskLevel = 'Low';
-    if (maxRisk > 60) overallRiskLevel = 'Critical';
-    else if (maxRisk > 40) overallRiskLevel = 'High';
-    else if (maxRisk > 20) overallRiskLevel = 'Medium';
+    if (caseRiskScore >= thresholds.CASE.CRITICAL) overallRiskLevel = 'Critical';
+    else if (caseRiskScore >= thresholds.CASE.HIGH) overallRiskLevel = 'High';
+    else if (caseRiskScore >= thresholds.CASE.MEDIUM) overallRiskLevel = 'Medium';
     
     return {
-        overallRiskScore: maxRisk,
+        overallRiskScore: caseRiskScore,
         overallRiskLevel: overallRiskLevel,
-        highRiskTransactions: transactions.filter(t => t.riskScore >= 20).sort((a, b) => b.riskScore - a.riskScore)
+        highRiskTransactions: transactions.filter(t => t.riskScore >= thresholds.TRANSACTION.MEDIUM).sort((a, b) => b.riskScore - a.riskScore)
     };
 };
 

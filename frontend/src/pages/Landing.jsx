@@ -1,8 +1,12 @@
 import React from 'react';
 import { ShieldAlert, Database, AlertTriangle, Users, FileText, Network, MapPin } from 'lucide-react';
 import FileUpload from '../components/FileUpload';
+import { useNavigate } from 'react-router-dom';
+import { useAnalysis } from '../context/AnalysisContext';
 
 export default function Landing() {
+  const navigate = useNavigate();
+  const { setAnalysisData, authToken } = useAnalysis();
 
   return (
     <div className="animate-fade-in" style={{textAlign: 'center', marginTop: '4rem'}}>
@@ -38,6 +42,32 @@ export default function Landing() {
       </div>
       
       <FileUpload />
+      
+      <div style={{marginTop: '2rem'}}>
+          <button 
+              className="btn" 
+              onClick={async () => {
+                  try {
+                      // Fetch demo dataset from backend
+                      const res = await fetch('http://localhost:3001/api/demo', {
+                          headers: { 'Authorization': `Bearer ${authToken}` }
+                      });
+                      const json = await res.json();
+                      if (json.data) {
+                          setAnalysisData(json.data);
+                          navigate('/dashboard');
+                      } else {
+                          alert('Error loading demo data');
+                      }
+                  } catch (e) {
+                      alert('Offline demo failed to load (Check if backend is running)');
+                  }
+              }}
+              style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid #3b82f6', color: '#60a5fa', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '1rem', display: 'inline-flex', alignItems: 'center', gap: '8px'}}
+          >
+              <Database size={18} /> Load Offline Demo
+          </button>
+      </div>
 
 
       {/* Feature Highlights Section */}

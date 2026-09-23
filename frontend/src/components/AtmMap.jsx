@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, Circle, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { MapPin, X, AlertTriangle, Calendar, Clock, DollarSign, Map as MapIcon, ShieldAlert } from 'lucide-react';
@@ -60,7 +60,7 @@ function MapUpdater({ markers }) {
     return null;
 }
 
-export default function AtmMap({ data }) {
+export default function AtmMap({ data, predictedHotspots = [] }) {
     const [selectedAtm, setSelectedAtm] = useState(null);
     const [filterRisk, setFilterRisk] = useState('All');
     const [showRoute, setShowRoute] = useState(false);
@@ -162,6 +162,24 @@ export default function AtmMap({ data }) {
                     </div>
                 </div>
             </div>
+            
+            {/* Predicted Hotspots Top-3 */}
+            {predictedHotspots && predictedHotspots.length > 0 && (
+                <div className="glass-panel no-print" style={{ padding: '15px', border: '1px solid rgba(239, 68, 68, 0.3)', background: 'rgba(239, 68, 68, 0.05)' }}>
+                    <div style={{display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: '#ef4444', fontWeight: 'bold'}}>
+                        <AlertTriangle size={18} /> Top-3 Predicted Cash-out Hotspots
+                    </div>
+                    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '10px'}}>
+                        {predictedHotspots.map((h, i) => (
+                            <div key={i} style={{background: 'rgba(0,0,0,0.4)', padding: '10px', borderRadius: '8px', borderLeft: '3px solid #ef4444'}}>
+                                <div style={{color: '#f8fafc', fontWeight: 'bold', fontSize: '0.9rem'}}>{h.location}</div>
+                                <div style={{color: '#94a3b8', fontSize: '0.8rem', margin: '4px 0'}}>Risk Score: <span style={{color: '#ef4444'}}>{h.riskScore}/100</span> — Confidence: {h.confidence}</div>
+                                <div style={{color: '#cbd5e1', fontSize: '0.75rem'}}>Signals: {h.signals}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* Toolbar */}
             <div className="glass-panel no-print" style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', alignItems: 'center', padding: '10px 15px' }}>
@@ -213,6 +231,20 @@ export default function AtmMap({ data }) {
                             }}
                         >
                         </Marker>
+                    ))}
+                    
+                    {/* Render Predicted Hotspots as Heatmap-like Circles */}
+                    {predictedHotspots && predictedHotspots.map((hotspot, i) => (
+                        <Circle
+                            key={`hs-${i}`}
+                            center={[hotspot.lat, hotspot.lng]}
+                            radius={400} // approx cell size
+                            pathOptions={{
+                                color: 'transparent',
+                                fillColor: '#ef4444',
+                                fillOpacity: 0.3
+                            }}
+                        />
                     ))}
 
                     {showRoute && routeCoordinates.length > 1 && (

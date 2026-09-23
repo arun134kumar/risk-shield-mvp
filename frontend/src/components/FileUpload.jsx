@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UploadCloud, Zap, CheckCircle2, Loader2, PlayCircle, FileText, FileUp } from 'lucide-react';
+import { useAnalysis } from '../context/AnalysisContext';
 
 const steps = [
     "Uploading Document",
@@ -21,6 +22,7 @@ export default function FileUpload() {
   const [currentStep, setCurrentStep] = useState(0);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { setAnalysisData, authToken } = useAnalysis();
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -56,20 +58,21 @@ export default function FileUpload() {
     formData.append('file', file);
 
     try {
-      const res = await fetch('https://risk-shield-mvp.vercel.app/api/upload', {
+      const res = await fetch('http://localhost:3001/api/upload', {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        },
         body: formData,
       });
 
       if (res.ok) {
         const result = await res.json();
 
-        localStorage.setItem(
-          'riskShieldAnalysis',
-          JSON.stringify(result.data)
-        );
+        setAnalysisData(result.data);
 
         simulateSteps(() => {
+
           navigate('/dashboard');
         });
       } else {
@@ -89,17 +92,17 @@ export default function FileUpload() {
     setError(null);
 
     try {
-      const res = await fetch('https://risk-shield-mvp.vercel.app/api/demo', {
-        method: 'POST'
+      const res = await fetch('http://localhost:3001/api/demo', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
       });
 
       if (res.ok) {
         const result = await res.json();
 
-        localStorage.setItem(
-          'riskShieldAnalysis',
-          JSON.stringify(result.data)
-        );
+        setAnalysisData(result.data);
 
         simulateSteps(() => {
           navigate('/dashboard');

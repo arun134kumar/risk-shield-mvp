@@ -4,6 +4,7 @@ const OcrSpaceService = require('./ocrSpaceService');
 const BankDetector = require('./parsers/BankDetector');
 const SBIParser = require('./parsers/SBIParser');
 const GenericTransactionNormalizer = require('./parsers/GenericTransactionNormalizer');
+const { normalizeDate } = require('../utils/dateUtils');
 
 class StatementParser {
     static async parse(buffer, mimetype, originalName) {
@@ -261,17 +262,35 @@ class StatementParser {
                 const type = credit > 0 ? 'CREDIT' : 'DEBIT';
 
                 if (amount > 0) {
+                    const source = type === 'DEBIT' ? 'Uploaded Account' : this.guessCounterparty(description);
+                    const dest = type === 'CREDIT' ? 'Uploaded Account' : this.guessCounterparty(description);
+                    
+                    let utr = null;
+                    const utrMatch = description.match(/(?:UTR|REF|RRN)[\s\-\:]*([A-Za-z0-9]{8,20})/i);
+                    if (utrMatch) utr = utrMatch[1];
+
                     transactions.push({
                         id: 'TXN-PDF-' + Date.now() + '-' + idCounter++,
-                        timestamp: date,
-                        description: description || 'Needs verification',
+                        caseId: null,
+                        sender: source,
+                        receiver: dest,
+                        UTR: utr,
+                        RRN: utr,
+                        timestamp: normalizeDate(date) || date,
                         amount: amount,
                         type: type,
-                        sourceAccount: type === 'DEBIT' ? 'Uploaded Account' : this.guessCounterparty(description),
-                        destAccount: type === 'CREDIT' ? 'Uploaded Account' : this.guessCounterparty(description),
-                        balance: balance || 0
+                        narration: description,
+                        bank: 'UNKNOWN',
+                        location: null,
+                        atmId: null,
+                        description: description || 'Needs verification',
+                        sourceAccount: source,
+                        destAccount: dest,
+                        balance: balance || 0,
+                        riskScore: 0
                     });
                 }
+
             }
         }
         
@@ -281,8 +300,16 @@ class StatementParser {
     static guessCounterparty(description) {
         if (!description) return 'Unknown Counterparty';
         
-        const upiMatch = description.match(/(?:UPI|VPA)[\/\-]([^\/]+)/i);
-        if (upiMatch) return upiMatch[1].trim();
+        // Handle UPI formats like UPI/DR/12345/Name/Bank or UPI/CR/...
+        const upiFullMatch = description.match(/UPI\/(?:DR|CR)\/[0-9]+\/([^\/]+)/i);
+        if (upiFullMatch && upiFullMatch[1].toUpperCase() !== 'DR' && upiFullMatch[1].toUpperCase() !== 'CR') {
+            return upiFullMatch[1].trim();
+        }
+        
+        const upiMatch = description.match(/(?:UPI|VPA)[\/\-](?:(?:DR|CR)[\/\-])?([^\/]+@[a-zA-Z]+|[a-zA-Z0-9]+)/i);
+        if (upiMatch && !['DR','CR'].includes(upiMatch[1].toUpperCase())) {
+            return upiMatch[1].trim();
+        }
         
         const lowerDesc = description.toLowerCase();
         if (lowerDesc.includes('atm') || lowerDesc.includes('cash')) {
@@ -316,15 +343,34 @@ class StatementParser {
                     type = 'CREDIT';
                 }
                 
+                const source = type === 'DEBIT' ? 'Uploaded Account' : (row.Sender || this.guessCounterparty(desc));
+                const dest = type === 'CREDIT' ? 'Uploaded Account' : (row.Receiver || this.guessCounterparty(desc));
+
+                let utr = row.UTR || row.RRN || row.Reference || null;
+                if (!utr) {
+                    const utrMatch = desc.match(/(?:UTR|REF|RRN)[\s\-\:]*([A-Za-z0-9]{8,20})/i);
+                    if (utrMatch) utr = utrMatch[1];
+                }
+
                 normalized.push({
                     id: row['Ref No'] || row['Reference'] || row['Txn Id'] || 'TXN-CSV-' + Date.now() + '-' + idCounter++,
-                    timestamp: dateStr,
-                    description: desc,
+                    caseId: null,
+                    sender: source,
+                    receiver: dest,
+                    UTR: utr,
+                    RRN: utr,
+                    timestamp: normalizeDate(dateStr) || dateStr,
                     amount: amount,
                     type: type,
-                    sourceAccount: type === 'DEBIT' ? 'Uploaded Account' : (row.Sender || this.guessCounterparty(desc)),
-                    destAccount: type === 'CREDIT' ? 'Uploaded Account' : (row.Receiver || this.guessCounterparty(desc)),
-                    balance: parseFloat(row.Balance || row.balance || 0)
+                    narration: desc,
+                    bank: row.Bank || 'UNKNOWN',
+                    location: row.Location || null,
+                    atmId: row.AtmId || null,
+                    description: desc,
+                    sourceAccount: source,
+                    destAccount: dest,
+                    balance: parseFloat(row.Balance || row.balance || 0),
+                    riskScore: 0
                 });
             }
         });
