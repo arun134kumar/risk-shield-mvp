@@ -28,7 +28,7 @@ describe('Integration: Upload to Report Generation', () => {
         const res = await request(app)
             .post('/api/report/generate')
             .set('Authorization', authHeader)
-            .send({ caseData });
+            .send({ caseId: caseData.caseInfo.id });
 
         expect(res.status).toBe(200);
         expect(res.body.caseId).toBe(caseData.caseInfo.id);

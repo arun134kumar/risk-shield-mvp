@@ -24,11 +24,21 @@ export default function FinalReport() {
                     'Authorization': `Bearer ${authToken}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ caseData })
+                body: JSON.stringify({ caseId: caseData.caseInfo.id })
             });
             if (!res.ok) {
-                const errorText = await res.text();
-                throw new Error(`Failed to fetch report: ${errorText || res.status}`);
+                let errorText = await res.text();
+                if (errorText.includes('<html')) {
+                    errorText = 'Server error occurred (Payload Too Large or Timeout).';
+                } else {
+                    try {
+                        const errObj = JSON.parse(errorText);
+                        errorText = errObj.error || errorText;
+                    } catch (e) {
+                        // Keep as text if not JSON
+                    }
+                }
+                throw new Error(errorText || `HTTP ${res.status}`);
             }
             const data = await res.json();
             setReport(data);

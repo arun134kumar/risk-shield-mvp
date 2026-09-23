@@ -27,8 +27,16 @@ class ReportBuilder {
                 cpMap[t.counterpartyAccountId] += t.amount;
             }
         });
+        
+        const maskIdentifier = (idStr) => {
+            if (!idStr || typeof idStr !== 'string') return idStr;
+            // Mask all but last 4 digits if length > 6
+            if (idStr.length > 6) return 'X'.repeat(idStr.length - 4) + idStr.slice(-4);
+            return idStr; // Return as is for short IDs or names
+        };
+
         report.topCounterparties = Object.entries(cpMap)
-            .map(([account, volume]) => ({ account, volume }))
+            .map(([account, volume]) => ({ account: maskIdentifier(account), volume }))
             .sort((a, b) => b.volume - a.volume)
             .slice(0, 5);
 

@@ -1,8 +1,41 @@
 const { Case } = require('../models/DataModels');
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
 
 class InvestigationCaseManager {
     constructor() {
-        this.cases = new Map();
+        // Use /tmp/riskshield-cases for Vercel, else data/cases
+        this.storageDir = process.env.VERCEL ? path.join(os.tmpdir(), 'riskshield-cases') : path.join(__dirname, '../data/cases');
+        
+        // Ensure directory exists
+        if (!fs.existsSync(this.storageDir)) {
+            fs.mkdirSync(this.storageDir, { recursive: true });
+        }
+    }
+
+    _getFilePath(caseId) {
+        return path.join(this.storageDir, `${caseId}.json`);
+    }
+
+    _saveCase(caseData) {
+        try {
+            fs.writeFileSync(this._getFilePath(caseData.id), JSON.stringify(caseData, null, 2));
+        } catch (err) {
+            console.error(`[InvestigationCaseManager] Failed to save case ${caseData.id}:`, err);
+        }
+    }
+
+    _loadCase(caseId) {
+        try {
+            const filePath = this._getFilePath(caseId);
+            if (fs.existsSync(filePath)) {
+                return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            }
+        } catch (err) {
+            console.error(`[InvestigationCaseManager] Failed to load case ${caseId}:`, err);
+        }
+        return null;
     }
 
     createCase(description, createdBy = 'System') {
@@ -13,25 +46,38 @@ class InvestigationCaseManager {
             status: 'OPEN',
             createdBy
         });
-        this.cases.set(id, newCase);
+        
+        this._saveCase(newCase);
         return newCase;
     }
 
     getCase(id) {
-        return this.cases.get(id);
+        return this._loadCase(id);
     }
 
     getAllCases() {
-        return Array.from(this.cases.values());
+        const cases = [];
+        try {
+            const files = fs.readdirSync(this.storageDir);
+            for (const file of files) {
+                if (file.endsWith('.json')) {
+                    const caseData = JSON.parse(fs.readFileSync(path.join(this.storageDir, file), 'utf8'));
+                    cases.push(caseData);
+                }
+            }
+        } catch (err) {
+            console.error(`[InvestigationCaseManager] Failed to get all cases:`, err);
+        }
+        return cases;
     }
 
     addStatementToCase(caseId, statement, analysisResult) {
-        let caseData = this.cases.get(caseId);
+        let caseData = this._loadCase(caseId);
+        
         if (!caseData) {
             // Auto-create case if it doesn't exist (for single statement uploads that initiate a case)
             caseData = this.createCase(`Investigation for ${statement.accountId}`);
             caseData.id = caseId;
-            this.cases.set(caseId, caseData);
         }
 
         // Add statement with its raw analysisResult for the frontend Tab view
@@ -57,11 +103,12 @@ class InvestigationCaseManager {
             user: 'Investigator'
         });
         
+        this._saveCase(caseData);
         return caseData;
     }
 
     aggregateCaseData(caseId) {
-        const caseData = this.cases.get(caseId);
+        const caseData = this._loadCase(caseId);
         if (!caseData) return null;
 
         // In a real application, we would recalculate the graph, findings, and rankings

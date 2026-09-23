@@ -380,11 +380,14 @@ router.post('/cases/:id/investigate/:accountId', requireAuth(), (req, res) => {
 });
 
 router.post('/report/generate', requireAuth(), (req, res) => {
-    const caseData = req.body.caseData;
-    if (!caseData) return res.status(400).json({error: 'caseData is required'});
+    const caseId = req.body.caseId || req.body.caseData?.caseInfo?.id;
+    if (!caseId) return res.status(400).json({error: 'caseId is required'});
     
-    const ReportBuilder = require('../services/ReportBuilder');
     try {
+        const caseData = InvestigationCaseManager.aggregateCaseData(caseId);
+        if (!caseData) return res.status(404).json({error: 'Case not found'});
+
+        const ReportBuilder = require('../services/ReportBuilder');
         const report = ReportBuilder.generateCaseReport(caseData);
         res.json(report);
     } catch (err) {
