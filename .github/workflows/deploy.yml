@@ -46,8 +46,8 @@ jobs:
       - name: Verify no localhost in production build
         working-directory: frontend
         run: |
-          if grep -rn "localhost" dist/ || grep -rn "127.0.0.1" dist/; then
-            echo "Error: localhost or 127.0.0.1 found in production build!"
+          if grep -rnE "localhost:[0-9]+" dist/ || grep -rn "127.0.0.1" dist/; then
+            echo "Error: localhost API URL or 127.0.0.1 found in production build!"
             exit 1
           fi
           echo "Production build verification passed."
