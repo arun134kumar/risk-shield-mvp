@@ -14,7 +14,7 @@ const multer = require('multer');
 const StatementParser = require('../services/StatementParser');
 const PatternAnalyzer = require('../services/PatternAnalyzer');
 const calculateRiskScore = require('../services/riskScoring');
-const CaseManager = require('../services/CaseManager');
+const InvestigationCaseManager = require('../services/InvestigationCaseManager');
 
 const storage = multer.memoryStorage();
 const upload = multer({ 
@@ -265,15 +265,27 @@ router.post('/upload', requireAuth([ROLES.INVESTIGATOR, ROLES.ADMIN]), upload.si
             analysisResult.metadata.uploadedAt = new Date().toISOString();
         }
 
-        if (req.body.caseId) {
-            attachedCase = CaseManager.addEvidence(req.body.caseId, req.file.originalname, req.file.buffer, analysisResult);
-        }
+        const { Statement } = require('../models/DataModels');
+        let caseId = req.body.caseId || `CASE-${Date.now().toString().slice(-6)}`;
+        
+        const statement = new Statement({
+            id: `STMT-${Date.now()}`,
+            accountId: parsedData.accountInfo.accountNumber || 'Unknown Account',
+            name: parsedData.accountInfo.name,
+            bank: parsedData.accountInfo.bank,
+            ifsc: parsedData.accountInfo.ifsc,
+            openingBalance: parsedData.accountInfo.openingBalance,
+            closingBalance: parsedData.accountInfo.closingBalance
+        });
+
+        InvestigationCaseManager.addStatementToCase(caseId, statement, analysisResult);
+        const aggregatedCase = InvestigationCaseManager.aggregateCaseData(caseId);
         
         res.json({
     status: 'success',
     message: 'Analysis complete.',
     data: analysisResult,
-    caseData: attachedCase
+    caseData: aggregatedCase
 });
     } catch (err) {
         console.error("Upload Error:", err.message);
@@ -421,17 +433,17 @@ router.get('/demo', requireAuth([ROLES.INVESTIGATOR, ROLES.ADMIN]), async (req, 
 });
 
 router.get('/cases', requireAuth(), (req, res) => {
-    res.json(CaseManager.getAllCases(req.user.id, req.user.role));
+    res.json(InvestigationCaseManager.getAllCases());
 });
 
 router.get('/cases/:id', requireAuth(), (req, res) => {
-    const c = CaseManager.getCase(req.params.id, req.user.id, req.user.role);
+    const c = InvestigationCaseManager.getCase(req.params.id);
     if (!c) return res.status(404).json({error: 'Case not found or access denied'});
     res.json(c);
 });
 
 router.post('/cases', requireAuth([ROLES.INVESTIGATOR, ROLES.ADMIN]), (req, res) => {
-    const newCase = CaseManager.createCase({ ...req.body, createdBy: req.user.id });
+    const newCase = InvestigationCaseManager.createCase(req.body.description || 'New Case', req.user.id);
     res.json(newCase);
 });
 

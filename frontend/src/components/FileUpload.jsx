@@ -22,7 +22,7 @@ export default function FileUpload() {
   const [currentStep, setCurrentStep] = useState(0);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { setAnalysisData, authToken } = useAnalysis();
+  const { setAnalysisData, setCaseData, setActiveTabId, authToken } = useAnalysis();
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -71,6 +71,10 @@ export default function FileUpload() {
         const result = await res.json();
 
         setAnalysisData(result.data);
+        if (result.caseData) {
+            setCaseData(result.caseData);
+            setActiveTabId('overview');
+        }
 
         simulateSteps(() => {
           navigate('/dashboard');
