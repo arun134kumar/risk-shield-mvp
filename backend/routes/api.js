@@ -199,13 +199,19 @@ router.post('/upload', requireAuth([ROLES.INVESTIGATOR, ROLES.ADMIN]), upload.si
             closingBalance: parsedData.accountInfo.closingBalance
         });
 
-        InvestigationCaseManager.addStatementToCase(caseId, statement, analysisResult);
-        const aggregatedCase = InvestigationCaseManager.aggregateCaseData(caseId);
+        const caseDataAfterAdd = await InvestigationCaseManager.addStatementToCase(caseId, statement, analysisResult);
+        const aggregatedCase = await InvestigationCaseManager.aggregateCaseData(caseDataAfterAdd.id);
         
+        // Ensure upload response does not duplicate the heavy transactions array
+        const compactAnalysisResult = { ...analysisResult };
+        compactAnalysisResult.transactions = undefined;
+        compactAnalysisResult.atmMarkers = undefined;
+        compactAnalysisResult.patterns = undefined;
+
         res.json({
     status: 'success',
     message: 'Analysis complete.',
-    data: analysisResult,
+    data: compactAnalysisResult,
     caseData: aggregatedCase
 });
     } catch (err) {
@@ -353,23 +359,23 @@ router.get('/demo', requireAuth([ROLES.INVESTIGATOR, ROLES.ADMIN]), async (req, 
     }
 });
 
-router.get('/cases', requireAuth(), (req, res) => {
-    res.json(InvestigationCaseManager.getAllCases());
+router.get('/cases', requireAuth(), async (req, res) => {
+    res.json(await InvestigationCaseManager.getAllCases());
 });
 
-router.get('/cases/:id', requireAuth(), (req, res) => {
-    const c = InvestigationCaseManager.getCase(req.params.id);
+router.get('/cases/:id', requireAuth(), async (req, res) => {
+    const c = await InvestigationCaseManager.getCase(req.params.id);
     if (!c) return res.status(404).json({error: 'Case not found or access denied'});
     res.json(c);
 });
 
-router.post('/cases', requireAuth([ROLES.INVESTIGATOR, ROLES.ADMIN]), (req, res) => {
-    const newCase = InvestigationCaseManager.createCase(req.body.description || 'New Case', req.user.id);
+router.post('/cases', requireAuth([ROLES.INVESTIGATOR, ROLES.ADMIN]), async (req, res) => {
+    const newCase = await InvestigationCaseManager.createCase(req.body.description || 'New Case', req.user.id);
     res.json(newCase);
 });
 
-router.post('/cases/:id/investigate/:accountId', requireAuth(), (req, res) => {
-    const c = InvestigationCaseManager.getCase(req.params.id);
+router.post('/cases/:id/investigate/:accountId', requireAuth(), async (req, res) => {
+    const c = await InvestigationCaseManager.getCase(req.params.id);
     if (!c) return res.status(404).json({error: 'Case not found'});
     
     const MoneyTrailEngine = require('../services/MoneyTrailEngine');
@@ -379,12 +385,12 @@ router.post('/cases/:id/investigate/:accountId', requireAuth(), (req, res) => {
     res.json(result);
 });
 
-router.post('/report/generate', requireAuth(), (req, res) => {
+router.post('/report/generate', requireAuth(), async (req, res) => {
     const caseId = req.body.caseId || req.body.caseData?.caseInfo?.id;
     if (!caseId) return res.status(400).json({error: 'caseId is required'});
     
     try {
-        const caseData = InvestigationCaseManager.aggregateCaseData(caseId);
+        const caseData = await InvestigationCaseManager.aggregateCaseData(caseId);
         if (!caseData) return res.status(404).json({error: 'Case not found'});
 
         const ReportBuilder = require('../services/ReportBuilder');

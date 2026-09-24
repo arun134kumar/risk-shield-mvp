@@ -2,13 +2,13 @@ const { Case } = require('../models/DataModels');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const zlib = require('zlib');
 
 class InvestigationCaseManager {
     constructor() {
-        // Use /tmp/riskshield-cases for Vercel, else data/cases
-        this.storageDir = process.env.VERCEL ? path.join(os.tmpdir(), 'riskshield-cases') : path.join(__dirname, '../data/cases');
+        this.isVercel = !!process.env.VERCEL;
+        this.storageDir = this.isVercel ? path.join(os.tmpdir(), 'riskshield-cases') : path.join(__dirname, '../data/cases');
         
-        // Ensure directory exists
         if (!fs.existsSync(this.storageDir)) {
             fs.mkdirSync(this.storageDir, { recursive: true });
         }
@@ -18,28 +18,82 @@ class InvestigationCaseManager {
         return path.join(this.storageDir, `${caseId}.json`);
     }
 
-    _saveCase(caseData) {
+    async _saveCase(caseData) {
+        // Always save locally to /tmp or data/cases
         try {
             fs.writeFileSync(this._getFilePath(caseData.id), JSON.stringify(caseData, null, 2));
         } catch (err) {
-            console.error(`[InvestigationCaseManager] Failed to save case ${caseData.id}:`, err);
+            console.error(`[InvestigationCaseManager] Failed to save case locally ${caseData.id}:`, err);
+        }
+
+        // If on Vercel, also sync to durable remote store
+        if (this.isVercel && caseData.id.startsWith('rs-')) {
+            try {
+                const apiId = caseData.id.replace('rs-', '');
+                const compressed = zlib.gzipSync(JSON.stringify(caseData)).toString('base64');
+                await fetch(`https://api.restful-api.dev/objects/${apiId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: 'RiskShieldCase', data: { payload: compressed } })
+                });
+            } catch (err) {
+                console.error(`[InvestigationCaseManager] Failed to sync to remote:`, err);
+            }
         }
     }
 
-    _loadCase(caseId) {
+    async _loadCase(caseId) {
+        // Try local first
         try {
             const filePath = this._getFilePath(caseId);
             if (fs.existsSync(filePath)) {
                 return JSON.parse(fs.readFileSync(filePath, 'utf8'));
             }
         } catch (err) {
-            console.error(`[InvestigationCaseManager] Failed to load case ${caseId}:`, err);
+            console.error(`[InvestigationCaseManager] Failed to load case locally ${caseId}:`, err);
+        }
+
+        // If on Vercel and local failed, fetch from remote
+        if (this.isVercel && caseId.startsWith('rs-')) {
+            try {
+                const apiId = caseId.replace('rs-', '');
+                const res = await fetch(`https://api.restful-api.dev/objects/${apiId}`);
+                if (res.ok) {
+                    const obj = await res.json();
+                    if (obj && obj.data && obj.data.payload) {
+                        const decompressed = zlib.gunzipSync(Buffer.from(obj.data.payload, 'base64')).toString('utf8');
+                        const caseData = JSON.parse(decompressed);
+                        // Cache locally for next time in this invocation
+                        try { fs.writeFileSync(this._getFilePath(caseId), JSON.stringify(caseData, null, 2)); } catch(e){}
+                        return caseData;
+                    }
+                }
+            } catch (err) {
+                console.error(`[InvestigationCaseManager] Failed to load case from remote:`, err);
+            }
         }
         return null;
     }
 
-    createCase(description, createdBy = 'System') {
-        const id = 'CASE-' + Date.now().toString().slice(-6) + '-' + Math.floor(Math.random() * 1000);
+    async createCase(description, createdBy = 'System') {
+        let id = 'CASE-' + Date.now().toString().slice(-6) + '-' + Math.floor(Math.random() * 1000);
+        
+        if (this.isVercel) {
+            try {
+                const emptyCase = { placeholder: true };
+                const compressed = zlib.gzipSync(JSON.stringify(emptyCase)).toString('base64');
+                const res = await fetch('https://api.restful-api.dev/objects', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: 'RiskShieldCase', data: { payload: compressed } })
+                });
+                const obj = await res.json();
+                if (obj.id) id = 'rs-' + obj.id;
+            } catch(e) {
+                console.error("Failed to create remote case id", e);
+            }
+        }
+
         const newCase = new Case({
             id,
             description,
@@ -47,15 +101,15 @@ class InvestigationCaseManager {
             createdBy
         });
         
-        this._saveCase(newCase);
+        await this._saveCase(newCase);
         return newCase;
     }
 
-    getCase(id) {
-        return this._loadCase(id);
+    async getCase(id) {
+        return await this._loadCase(id);
     }
 
-    getAllCases() {
+    async getAllCases() {
         const cases = [];
         try {
             const files = fs.readdirSync(this.storageDir);
@@ -71,13 +125,13 @@ class InvestigationCaseManager {
         return cases;
     }
 
-    addStatementToCase(caseId, statement, analysisResult) {
-        let caseData = this._loadCase(caseId);
+    async addStatementToCase(caseId, statement, analysisResult) {
+        let caseData = await this._loadCase(caseId);
         
         if (!caseData) {
             // Auto-create case if it doesn't exist (for single statement uploads that initiate a case)
-            caseData = this.createCase(`Investigation for ${statement.accountId}`);
-            caseData.id = caseId;
+            caseData = await this.createCase(`Investigation for ${statement.accountId}`);
+            caseId = caseData.id;
         }
 
         const compactAnalysisResult = { ...analysisResult };
@@ -115,12 +169,12 @@ class InvestigationCaseManager {
             user: 'Investigator'
         });
         
-        this._saveCase(caseData);
+        await this._saveCase(caseData);
         return caseData;
     }
 
-    aggregateCaseData(caseId) {
-        const caseData = this._loadCase(caseId);
+    async aggregateCaseData(caseId) {
+        const caseData = await this._loadCase(caseId);
         if (!caseData) return null;
 
         // In a real application, we would recalculate the graph, findings, and rankings

@@ -6,9 +6,9 @@ describe('Integration: Large Report Generation', () => {
     let caseId;
     let authHeader = 'Bearer mock-token-investigator';
 
-    beforeAll(() => {
+    beforeAll(async () => {
         // Create a mock case with 200 transactions
-        const c = InvestigationCaseManager.createCase('Large Case 200', 'System');
+        const c = await InvestigationCaseManager.createCase('Large Case 200', 'System');
         caseId = c.id;
 
         const mockTransactions = [];
@@ -21,7 +21,7 @@ describe('Integration: Large Report Generation', () => {
             });
         }
 
-        InvestigationCaseManager.addStatementToCase(caseId, { accountId: 'TEST-ACC' }, { transactions: mockTransactions, patterns: [] });
+        await InvestigationCaseManager.addStatementToCase(caseId, { accountId: 'TEST-ACC' }, { transactions: mockTransactions, patterns: [] });
     });
 
     it('should successfully generate report using caseId without Payload Too Large error', async () => {
