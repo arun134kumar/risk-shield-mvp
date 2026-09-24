@@ -31,10 +31,22 @@ export default function StatementView({ statementId }) {
 
   const statementTransactions = useMemo(() => {
       if (data.transactions && data.transactions.length > 0) return data.transactions;
+      if (!caseData?.transactions) return [];
+      
+      const byStatementId = caseData.transactions.filter(t => t.statementId === statementId);
+      if (byStatementId.length > 0) return byStatementId;
+      
       const accNumber = data.accountInfo?.accountNumber;
-      if (!accNumber || accNumber === 'Not available in statement' || !caseData?.transactions) return caseData?.transactions || []; // fallback
-      return caseData.transactions.filter(t => t.sourceAccount === accNumber || t.destAccount === accNumber || t.sourceAccountId === accNumber || t.counterpartyAccountId === accNumber);
-  }, [caseData, data]);
+      if (!accNumber || accNumber === 'Not available in statement') return caseData.transactions;
+      return caseData.transactions.filter(t => 
+          t.sourceAccount === accNumber || 
+          t.destAccount === accNumber || 
+          t.sourceAccountId === accNumber || 
+          t.counterpartyAccountId === accNumber ||
+          t.sourceAccount === 'Uploaded Account' ||
+          t.destAccount === 'Uploaded Account'
+      );
+  }, [caseData, data, statementId]);
 
   const filteredTransactions = useMemo(() => {
       if (!data) return [];
@@ -190,12 +202,12 @@ export default function StatementView({ statementId }) {
           </h3>
           <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem'}}>
             <span style={{color: '#94a3b8'}}>Resolved ATM Locations:</span>
-            <strong>{data.atmMarkers?.filter(m => m.resolved)?.length || 0}</strong>
+            <strong>{(data.atmMarkers || caseData?.atmMarkers || []).filter(m => m.resolved)?.length || 0}</strong>
           </div>
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
             <span style={{color: '#94a3b8'}}>Max ATM Risk Score:</span>
             <strong style={{color: '#ef4444'}}>
-               {data.atmMarkers?.length > 0 ? Math.max(...data.atmMarkers.map(c => c.maxRisk)) : 0}/100
+               {(data.atmMarkers || caseData?.atmMarkers || []).length > 0 ? Math.max(...(data.atmMarkers || caseData?.atmMarkers || []).map(c => c.maxRisk)) : 0}/100
             </strong>
           </div>
         </div>
@@ -309,7 +321,7 @@ export default function StatementView({ statementId }) {
             <MapIcon size={20} color="#06b6d4" /> ATM Withdrawals Map & Cash-out Prediction
           </h3>
           <AtmMap 
-            data={data.atmMarkers} 
+            data={data.atmMarkers || caseData?.atmMarkers || []} 
             predictedHotspots={data.predictedHotspots}
           />
         </div>

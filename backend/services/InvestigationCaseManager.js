@@ -148,7 +148,11 @@ class InvestigationCaseManager {
         
         // Add transactions
         if (analysisResult && analysisResult.transactions) {
-            caseData.transactions.push(...analysisResult.transactions);
+            const mappedTxns = analysisResult.transactions.map(t => ({
+                ...t,
+                statementId: statement.id
+            }));
+            caseData.transactions.push(...mappedTxns);
         }
 
         // Add findings
