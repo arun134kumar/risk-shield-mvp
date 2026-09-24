@@ -15,9 +15,10 @@ export default function Dashboard() {
         const _tabs = [{ id: 'overview', label: 'Case Overview' }];
         if (caseData.statements) {
             caseData.statements.forEach((stmt, idx) => {
+                const safeAccountId = stmt.accountId || 'UNKNOWN';
                 _tabs.push({
                     id: stmt.id,
-                    label: `Account ${stmt.accountId.slice(-4)} (${stmt.name})`,
+                    label: `Account ${safeAccountId.length >= 4 ? safeAccountId.slice(-4) : safeAccountId} (${stmt.name || 'Unknown'})`,
                     statementData: stmt
                 });
             });

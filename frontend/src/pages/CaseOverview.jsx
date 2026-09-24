@@ -16,6 +16,7 @@ export default function CaseOverview({ data }) {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('caseId', data.caseInfo.id);
+        formData.append('counterpartyAccount', counterpartyAccount);
 
         const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:3001' : 'https://risk-shield-mvp.vercel.app');
         try {
@@ -119,19 +120,19 @@ export default function CaseOverview({ data }) {
                                         {isUploaded && <div style={{color: '#10b981', fontSize: '0.85rem', marginTop: '5px'}}>✓ Statement already uploaded</div>}
                                     </div>
                                     
-                                    {!isUploaded && (
+                                    {!isUploaded && !/ATM|Cash|WDL|Unknown/i.test(cp.account) && (
                                         <div style={{display: 'flex', gap: '10px'}}>
                                             <button 
                                                 onClick={async () => {
                                                     try {
                                                         const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:3001' : 'https://risk-shield-mvp.vercel.app');
-                                                        const res = await fetch(`${API_BASE_URL}/api/cases/${data.caseInfo.id}/investigate/${cp.account}`, {
+                                                        const res = await fetch(`${API_BASE_URL}/api/cases/${data.caseInfo.id}/investigate/${encodeURIComponent(cp.account)}`, {
                                                             method: 'POST',
                                                             headers: { 'Authorization': `Bearer ${authToken}` }
                                                         });
                                                         const result = await res.json();
                                                         console.log("Investigation Result:", result);
-                                                        alert(`Investigation Complete!\nPaths Found: ${result.summary.totalPaths}\nCycles Detected: ${result.summary.totalCycles}\nCash-out found: ${result.summary.cashOutFound}`);
+                                                        alert(`Investigation Complete!\nPaths Found: ${result.summary?.totalPaths || 0}\nCycles Detected: ${result.summary?.totalCycles || 0}\nCash-out found: ${result.summary?.cashOutFound || false}`);
                                                     } catch (e) {
                                                         alert("Failed to investigate");
                                                     }
@@ -156,6 +157,11 @@ export default function CaseOverview({ data }) {
                                                 Upload Statement
                                                 <input type="file" style={{display: 'none'}} accept=".pdf,.csv,.xlsx" onChange={(e) => handleUploadForCounterparty(e, cp.account)} disabled={uploadingFor === cp.account} />
                                             </label>
+                                        </div>
+                                    )}
+                                    {!isUploaded && /ATM|Cash|WDL|Unknown/i.test(cp.account) && (
+                                        <div style={{color: '#f59e0b', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '5px'}}>
+                                            <ShieldAlert size={16} /> Identified as Cash-out Node
                                         </div>
                                     )}
                                 </div>
