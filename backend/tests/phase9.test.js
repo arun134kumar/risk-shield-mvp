@@ -9,9 +9,9 @@ describe('Phase 9: Complete Investigation Report', () => {
                 { id: 's1', accountId: 'A', analysisResult: {} }
             ],
             transactions: [
-                { direction: 'DEBIT', accountId: 'A', counterpartyAccountId: 'B', amount: 10000 },
-                { direction: 'DEBIT', accountId: 'A', counterpartyAccountId: 'B', amount: 5000 },
-                { direction: 'DEBIT', accountId: 'A', counterpartyAccountId: 'C', amount: 8000 }
+                { type: 'DEBIT', accountId: 'A', counterpartyAccountId: 'B', amount: 10000 },
+                { type: 'DEBIT', accountId: 'A', counterpartyAccountId: 'B', amount: 5000 },
+                { type: 'DEBIT', accountId: 'A', counterpartyAccountId: 'C', amount: 8000 }
             ],
             findings: [
                 new Finding({ title: 'Smurfing Detected', type: 'PATTERN', severity: 'CRITICAL', confidence: 0.9, entityId: 'A' }),

@@ -47,7 +47,7 @@ export default function CaseOverview({ data }) {
     const topCounterparties = React.useMemo(() => {
         const cpMap = {};
         data.transactions.forEach(t => {
-            if (t.direction === 'DEBIT' && t.counterpartyAccountId && t.counterpartyAccountId !== 'Unknown Counterparty') {
+            if (t.type === 'DEBIT' && t.counterpartyAccountId && t.counterpartyAccountId !== 'Unknown Counterparty') {
                 if (!cpMap[t.counterpartyAccountId]) cpMap[t.counterpartyAccountId] = 0;
                 cpMap[t.counterpartyAccountId] += t.amount;
             }

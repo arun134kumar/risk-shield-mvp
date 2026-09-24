@@ -132,6 +132,56 @@ class ConclusionEngine {
             signals: (t.signals || []).map(s => s.type).join(', ') || 'High Risk'
         }));
 
+        // 6. CANONICAL DTO Normalization for Frontend
+        report.caseId = accountInfo.accountNumber || 'Unknown';
+        report.status = report.assessment;
+        
+        let totalMoneyFlow = 0;
+        let uniqueAccounts = new Set();
+        transactions.forEach(t => {
+            totalMoneyFlow += t.amount;
+            if (t.sourceAccount) uniqueAccounts.add(t.sourceAccount);
+            if (t.destAccount) uniqueAccounts.add(t.destAccount);
+        });
+
+        report.summary = {
+            totalStatements: 1,
+            totalTransactions: transactions.length,
+            totalAccounts: uniqueAccounts.size,
+            totalFindings: patterns ? patterns.length : 0,
+            totalMoneyFlow: totalMoneyFlow
+        };
+
+        // Compute volume for counterparties
+        const cpMap = {};
+        transactions.forEach(t => {
+            if (t.type === 'DEBIT' && t.destAccount) {
+                cpMap[t.destAccount] = (cpMap[t.destAccount] || 0) + t.amount;
+            }
+        });
+
+        report.topCounterparties = report.top3Candidates.map(c => ({
+            account: c.account,
+            volume: cpMap[c.account] || 0
+        }));
+
+        report.criticalFindings = (patterns || []).map(p => ({
+            type: p.type,
+            title: p.description,
+            severity: p.riskContribution > 20 ? 'HIGH' : 'MEDIUM',
+            confidence: 90,
+            evidenceCount: 1
+        }));
+
+        report.cashOutLocations = (atmMarkers || []).filter(atm => atm.resolved).map(atm => ({
+            location: atm.displayName || atm.originalLocationStr,
+            withdrawalsCount: atm.withdrawalsCount,
+            totalWithdrawn: atm.totalWithdrawn,
+            maxRisk: atm.maxRisk
+        }));
+
+        report.timeline = []; // Not applicable for single statement
+
         return report;
     }
 }

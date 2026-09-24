@@ -98,11 +98,11 @@ export default function FinalReport({ data: incomingData }) {
                         <Info size={20} color="#3b82f6" /> Case Summary
                     </h3>
                     <div style={{ marginTop: '1rem', color: '#cbd5e1', fontSize: '0.9rem' }}>
-                        <div style={{marginBottom: '5px'}}><strong>Case ID:</strong> {report.caseId}</div>
-                        <div style={{marginBottom: '5px'}}><strong>Status:</strong> {report.status}</div>
-                        <div style={{marginBottom: '5px'}}><strong>Statements Analysed:</strong> {report.summary.totalStatements}</div>
-                        <div style={{marginBottom: '5px'}}><strong>Total Transactions:</strong> {report.summary.totalTransactions}</div>
-                        <div style={{marginBottom: '5px'}}><strong>Total Findings:</strong> {report.summary.totalFindings}</div>
+                        <div style={{marginBottom: '5px'}}><strong>Case ID:</strong> {report.caseId || 'UNKNOWN'}</div>
+                        <div style={{marginBottom: '5px'}}><strong>Status:</strong> {report.status || 'OPEN'}</div>
+                        <div style={{marginBottom: '5px'}}><strong>Statements Analysed:</strong> {Number(report?.summary?.totalStatements ?? 0)}</div>
+                        <div style={{marginBottom: '5px'}}><strong>Total Transactions:</strong> {Number(report?.summary?.totalTransactions ?? 0)}</div>
+                        <div style={{marginBottom: '5px'}}><strong>Total Findings:</strong> {Number(report?.summary?.totalFindings ?? 0)}</div>
                     </div>
                 </div>
 
@@ -112,10 +112,10 @@ export default function FinalReport({ data: incomingData }) {
                         <Network size={20} color="#8b5cf6" /> Top Target Accounts
                     </h3>
                     <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        {report.topCounterparties.map((cp, idx) => (
+                        {(report.topCounterparties || []).map((cp, idx) => (
                             <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', background: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '4px' }}>
                                 <span style={{fontFamily: 'monospace', color: '#fff'}}>{cp.account}</span>
-                                <span style={{color: '#8b5cf6', fontWeight: 'bold'}}>₹{cp.volume.toLocaleString()}</span>
+                                <span style={{color: '#8b5cf6', fontWeight: 'bold'}}>₹{(cp.volume || 0).toLocaleString()}</span>
                             </div>
                         ))}
                     </div>
@@ -133,15 +133,15 @@ export default function FinalReport({ data: incomingData }) {
                         <ShieldAlert size={20} color="#ef4444" /> Critical Findings
                     </h3>
                     <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        {report.criticalFindings.slice(0, 5).map((f, idx) => (
+                        {(report.criticalFindings || []).slice(0, 5).map((f, idx) => (
                             <div key={idx} style={{ background: 'rgba(239, 68, 68, 0.05)', borderLeft: '4px solid #ef4444', padding: '10px', borderRadius: '4px' }}>
                                 <div style={{color: '#f8fafc', fontWeight: 'bold', fontSize: '0.9rem'}}>{f.title}</div>
                                 <div style={{color: '#94a3b8', fontSize: '0.8rem', marginTop: '4px'}}>
-                                    Severity: <span style={{color: f.severity === 'CRITICAL' ? '#ef4444' : '#f59e0b'}}>{f.severity}</span> | Evidence: {f.evidenceCount} items
+                                    Severity: <span style={{color: f.severity === 'CRITICAL' ? '#ef4444' : '#f59e0b'}}>{f.severity}</span> | Evidence: {f.evidenceCount || 0} items
                                 </div>
                             </div>
                         ))}
-                        {report.criticalFindings.length === 0 && <div style={{color: '#94a3b8'}}>No critical findings.</div>}
+                        {(!report.criticalFindings || report.criticalFindings.length === 0) && <div style={{color: '#94a3b8'}}>No critical findings.</div>}
                     </div>
                 </div>
 
@@ -151,15 +151,15 @@ export default function FinalReport({ data: incomingData }) {
                         <AlertTriangle size={20} color="#f59e0b" /> Cash-out & ATM Locations
                     </h3>
                     <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                        {report.cashOutLocations.map((loc, idx) => (
+                        {(report.cashOutLocations || []).map((loc, idx) => (
                             <div key={idx} style={{ background: 'rgba(245, 158, 11, 0.05)', borderLeft: '4px solid #f59e0b', padding: '10px', borderRadius: '4px' }}>
                                 <div style={{color: '#f8fafc', fontWeight: 'bold', fontSize: '0.9rem'}}>{loc.location}</div>
                                 <div style={{color: '#94a3b8', fontSize: '0.8rem', marginTop: '4px'}}>
-                                    Amount: <span style={{color: '#f59e0b'}}>₹{loc.totalWithdrawn.toLocaleString()}</span> | Withdrawals: {loc.withdrawalsCount}
+                                    Amount: <span style={{color: '#f59e0b'}}>₹{(loc.totalWithdrawn || 0).toLocaleString()}</span> | Withdrawals: {loc.withdrawalsCount || 0}
                                 </div>
                             </div>
                         ))}
-                        {report.cashOutLocations?.length === 0 && <div style={{color: '#94a3b8'}}>No cash-out locations identified.</div>}
+                        {(!report.cashOutLocations || report.cashOutLocations.length === 0) && <div style={{color: '#94a3b8'}}>No cash-out locations identified.</div>}
                     </div>
                 </div>
 

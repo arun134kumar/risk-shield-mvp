@@ -19,9 +19,9 @@ export class ErrorBoundary extends React.Component {
       return (
         <div style={{ padding: '2rem', textAlign: 'center', color: '#ef4444', backgroundColor: '#0f172a', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <h2>Something went wrong in this investigation view.</h2>
-          <pre style={{ color: '#fca5a5', marginTop: '1rem', maxWidth: '600px', whiteSpace: 'pre-wrap', textAlign: 'left', background: 'rgba(239, 68, 68, 0.1)', padding: '1rem', borderRadius: '4px' }}>
-            {this.state.error && this.state.error.toString()}
-          </pre>
+          <div style={{ color: '#94a3b8', marginTop: '1rem' }}>
+            Error Reference: {Date.now().toString(36).toUpperCase()}
+          </div>
           <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
             <button onClick={() => window.location.reload()} style={{ padding: '0.5rem 1rem', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Retry</button>
             <button onClick={() => { this.setState({ hasError: false }); window.history.back(); }} style={{ padding: '0.5rem 1rem', background: '#64748b', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Back to Case</button>
