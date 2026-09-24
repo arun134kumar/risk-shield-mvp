@@ -29,9 +29,16 @@ export default function StatementView({ statementId }) {
       window.print();
   };
 
+  const statementTransactions = useMemo(() => {
+      if (data.transactions && data.transactions.length > 0) return data.transactions;
+      const accNumber = data.accountInfo?.accountNumber;
+      if (!accNumber || accNumber === 'Not available in statement' || !caseData?.transactions) return caseData?.transactions || []; // fallback
+      return caseData.transactions.filter(t => t.sourceAccount === accNumber || t.destAccount === accNumber || t.sourceAccountId === accNumber || t.counterpartyAccountId === accNumber);
+  }, [caseData, data]);
+
   const filteredTransactions = useMemo(() => {
       if (!data) return [];
-      let txns = data.transactions || [];
+      let txns = statementTransactions;
       if (typeFilter !== 'ALL') {
           txns = txns.filter(t => t.type === typeFilter);
       }
@@ -200,7 +207,7 @@ export default function StatementView({ statementId }) {
               <h3 style={{marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px'}}>
                   <Network size={20} color="#8b5cf6" /> Money Trail Graph
               </h3>
-              <MoneyTrailGraph transactions={data.transactions} />
+              <MoneyTrailGraph transactions={statementTransactions} />
           </div>
       </div>
 

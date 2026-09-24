@@ -16,7 +16,9 @@ class ReportBuilder {
             
             topCounterparties: [],
             criticalFindings: [],
-            cashOutLocations: []
+            cashOutLocations: [],
+            moneyTrail: [],
+            timeline: caseData.timeline || []
         };
 
         // 1. Top Counterparties (By Debit Volume)
@@ -74,6 +76,22 @@ class ReportBuilder {
             });
         }
         report.cashOutLocations = Array.from(atmMap.values()).sort((a, b) => b.totalWithdrawn - a.totalWithdrawn);
+
+        // 4. Money Trail Summary (Significant flows)
+        const flows = new Map();
+        caseData.transactions.forEach(t => {
+            if (t.counterpartyAccountId && t.counterpartyAccountId !== 'Unknown Counterparty') {
+                const source = t.direction === 'DEBIT' ? t.sourceAccount : t.counterpartyAccountId;
+                const dest = t.direction === 'DEBIT' ? t.counterpartyAccountId : t.sourceAccount;
+                const key = `${source} -> ${dest}`;
+                if (!flows.has(key)) flows.set(key, 0);
+                flows.set(key, flows.get(key) + t.amount);
+            }
+        });
+        report.moneyTrail = Array.from(flows.entries())
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10)
+            .map(([path, amount]) => `${path} (₹${amount.toLocaleString()})`);
 
         return report;
     }

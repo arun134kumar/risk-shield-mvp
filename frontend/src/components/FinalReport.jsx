@@ -2,20 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { ShieldCheck, ShieldAlert, FileText, Network, CheckCircle2, AlertTriangle, Search, Info, Loader2 } from 'lucide-react';
 import { useAnalysis } from '../context/AnalysisContext';
 
-export default function FinalReport() {
+export default function FinalReport({ data: incomingData }) {
     const { caseData, authToken } = useAnalysis();
-    const [report, setReport] = useState(null);
+    const [report, setReport] = useState(incomingData || null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        if (incomingData) {
+            setReport(incomingData);
+            return;
+        }
         fetchReport();
-    }, [caseData, authToken]);
+    }, [caseData, authToken, incomingData]);
 
     const fetchReport = async (retries = 2) => {
+        if (incomingData) return;
         if (!caseData || !caseData.caseInfo) return;
         setLoading(true);
         setError(null);
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout
+        
         try {
             const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:3001' : 'https://risk-shield-mvp.vercel.app');
             const res = await fetch(`${API_BASE_URL}/api/report/generate`, {
@@ -24,8 +33,12 @@ export default function FinalReport() {
                     'Authorization': `Bearer ${authToken}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ caseId: caseData.caseInfo.id })
+                body: JSON.stringify({ caseId: caseData.caseInfo.id }),
+                signal: controller.signal
             });
+            
+            clearTimeout(timeoutId);
+            
             if (!res.ok) {
                 let errorText = await res.text();
                 if (errorText.includes('<html')) {
@@ -42,17 +55,18 @@ export default function FinalReport() {
             }
             const data = await res.json();
             setReport(data);
+            setLoading(false);
         } catch (err) {
+            clearTimeout(timeoutId);
             console.error(err);
-            if (retries > 0) {
+            if (err.name === 'AbortError') {
+                setError("Master Report generation timed out. Please retry.");
+                setLoading(false);
+            } else if (retries > 0) {
                 console.log(`Retrying report generation... (${retries} retries left)`);
                 setTimeout(() => fetchReport(retries - 1), 1000);
             } else {
                 setError(err.message);
-                setLoading(false);
-            }
-        } finally {
-            if (retries === 0 || report) {
                 setLoading(false);
             }
         }
@@ -145,7 +159,49 @@ export default function FinalReport() {
                                 </div>
                             </div>
                         ))}
-                        {report.cashOutLocations.length === 0 && <div style={{color: '#94a3b8'}}>No cash-out locations identified.</div>}
+                        {report.cashOutLocations?.length === 0 && <div style={{color: '#94a3b8'}}>No cash-out locations identified.</div>}
+                    </div>
+                </div>
+
+            </div>
+
+            <hr style={{ borderColor: 'rgba(255,255,255,0.1)', margin: '2rem 0' }} />
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
+                
+                {/* Money Trail */}
+                <div>
+                    <h3 style={{ color: '#fff', display: 'flex', alignItems: 'center', gap: '8px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>
+                        <Network size={20} color="#8b5cf6" /> Money Trail Highlights
+                    </h3>
+                    <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        {report.moneyTrail?.map((trail, idx) => (
+                            <div key={idx} style={{ background: 'rgba(139, 92, 246, 0.05)', borderLeft: '4px solid #8b5cf6', padding: '10px', borderRadius: '4px', color: '#f8fafc', fontSize: '0.9rem' }}>
+                                {trail}
+                            </div>
+                        ))}
+                        {(!report.moneyTrail || report.moneyTrail.length === 0) && <div style={{color: '#94a3b8'}}>No significant money trails found.</div>}
+                    </div>
+                </div>
+
+                {/* Timeline */}
+                <div>
+                    <h3 style={{ color: '#fff', display: 'flex', alignItems: 'center', gap: '8px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>
+                        <CheckCircle2 size={20} color="#10b981" /> Case Timeline
+                    </h3>
+                    <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        {report.timeline?.slice(-5).map((event, idx) => (
+                            <div key={idx} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                                <div style={{minWidth: '120px', color: '#94a3b8', fontSize: '0.8rem'}}>
+                                    {new Date(event.timestamp).toLocaleString()}
+                                </div>
+                                <div>
+                                    <div style={{color: '#f8fafc', fontSize: '0.9rem'}}>{event.event}</div>
+                                    <div style={{color: '#64748b', fontSize: '0.8rem'}}>by {event.user}</div>
+                                </div>
+                            </div>
+                        ))}
+                        {(!report.timeline || report.timeline.length === 0) && <div style={{color: '#94a3b8'}}>No timeline events recorded.</div>}
                     </div>
                 </div>
 
