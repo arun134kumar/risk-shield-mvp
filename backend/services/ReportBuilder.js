@@ -53,29 +53,26 @@ class ReportBuilder {
         });
 
         // 3. Cash-out / ATM Locations
-        // Get all ATM markers from the statements' analysisResult
         const atmMap = new Map();
-        caseData.statements.forEach(stmt => {
-            if (stmt.analysisResult && stmt.analysisResult.atmMarkers) {
-                stmt.analysisResult.atmMarkers.forEach(atm => {
-                    if (atm.resolved && atm.lat && atm.lng) {
-                        if (!atmMap.has(atm.id)) {
-                            atmMap.set(atm.id, {
-                                location: atm.displayName || atm.originalLocationStr,
-                                withdrawalsCount: atm.withdrawalsCount,
-                                totalWithdrawn: atm.totalWithdrawn,
-                                maxRisk: atm.maxRisk
-                            });
-                        } else {
-                            const existing = atmMap.get(atm.id);
-                            existing.withdrawalsCount += atm.withdrawalsCount;
-                            existing.totalWithdrawn += atm.totalWithdrawn;
-                            existing.maxRisk = Math.max(existing.maxRisk, atm.maxRisk);
-                        }
+        if (caseData.atmMarkers) {
+            caseData.atmMarkers.forEach(atm => {
+                if (atm.resolved && atm.lat && atm.lng) {
+                    if (!atmMap.has(atm.id)) {
+                        atmMap.set(atm.id, {
+                            location: atm.displayName || atm.originalLocationStr,
+                            withdrawalsCount: atm.withdrawalsCount,
+                            totalWithdrawn: atm.totalWithdrawn,
+                            maxRisk: atm.maxRisk
+                        });
+                    } else {
+                        const existing = atmMap.get(atm.id);
+                        existing.withdrawalsCount += atm.withdrawalsCount;
+                        existing.totalWithdrawn += atm.totalWithdrawn;
+                        existing.maxRisk = Math.max(existing.maxRisk, atm.maxRisk);
                     }
-                });
-            }
-        });
+                }
+            });
+        }
         report.cashOutLocations = Array.from(atmMap.values()).sort((a, b) => b.totalWithdrawn - a.totalWithdrawn);
 
         return report;

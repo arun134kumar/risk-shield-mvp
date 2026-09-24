@@ -1,0 +1,192 @@
+{
+  "id": "CASE-771608",
+  "title": null,
+  "status": "OPEN",
+  "rootAccountId": null,
+  "createdAt": "2026-09-24T09:06:11.608Z",
+  "updatedAt": "2026-09-24T09:06:11.608Z",
+  "investigatorNotes": "",
+  "dataQuality": "UNKNOWN",
+  "reportVersion": "1.0",
+  "statements": [
+    {
+      "id": "STMT-1790240771608",
+      "accountId": "Not available in statement",
+      "fileHash": null,
+      "filename": null,
+      "fileType": null,
+      "parserName": null,
+      "parserVersion": null,
+      "uploadedAt": "2026-09-24T09:06:11.608Z",
+      "periodStart": null,
+      "periodEnd": null,
+      "parsingStatus": "UNKNOWN",
+      "transactionCount": 0,
+      "openingBalance": "Not available in statement",
+      "closingBalance": "Not available in statement",
+      "reconciliationStatus": "UNKNOWN",
+      "limitations": [],
+      "analysisResult": {
+        "accountInfo": {
+          "name": "Not available in statement",
+          "bank": "Not available in statement",
+          "accountNumber": "Not available in statement",
+          "ifsc": "Not available in statement",
+          "statementPeriod": "Not available in statement",
+          "openingBalance": "Not available in statement",
+          "closingBalance": "Not available in statement"
+        },
+        "metadata": {
+          "pagesProcessed": 1,
+          "ocrUsed": false,
+          "transactionsFound": 1,
+          "accountInfoDetected": false,
+          "transactionTableDetected": true,
+          "pdfSizeKb": 0,
+          "extractedTextLength": 0,
+          "textLayerDetected": false,
+          "ocrRequired": false,
+          "ocrRequestsCount": 0,
+          "bankDetected": "UNKNOWN",
+          "parsingConfidence": "Low",
+          "fileHash": "5cda3651d363c592ff39d2b15bf5869347a87f0a229ad5e3d20f4cf3a0c573ed",
+          "uploadedBy": "Investigator",
+          "uploadedAt": "2026-09-24T09:06:11.608Z"
+        },
+        "summary": {
+          "totalTransactions": 1,
+          "totalCredits": 0,
+          "totalDebits": 1000,
+          "netFlow": -1000,
+          "balanceReconciliation": "Not Available",
+          "reconciliationMismatchAmt": 0,
+          "totalTransactionValue": 1000,
+          "uniqueSenders": 0,
+          "uniqueReceivers": 1,
+          "highRiskCount": 0,
+          "overallRiskScore": 0,
+          "overallRiskLevel": "Low"
+        },
+        "highRiskTransactions": [],
+        "alerts": [],
+        "graphData": {
+          "nodes": [
+            {
+              "id": "Uploaded Account",
+              "type": "ACCOUNT"
+            },
+            {
+              "id": "Test",
+              "type": "ACCOUNT"
+            }
+          ],
+          "links": [
+            {
+              "id": "TXN-CSV-1790240771407-1",
+              "source": "Uploaded Account",
+              "target": "Test",
+              "amount": 1000,
+              "timestamp": "2026-01-01T00:00:10.000Z",
+              "transactionId": null,
+              "paymentMode": null
+            }
+          ],
+          "metrics": {
+            "multiHopChains": [],
+            "fanInAccounts": []
+          }
+        },
+        "finalReport": {
+          "analyzedAccount": "Not available in statement",
+          "assessment": "NO STRONG SUSPICIOUS EVIDENCE",
+          "why": [
+            "No significant rapid-transfer pattern identified.",
+            "No significant multi-hop pattern identified.",
+            "No suspicious cash-out pattern identified.",
+            "No known complaint found in connected data."
+          ],
+          "moneyTrail": [
+            "Not available in statement → Test"
+          ],
+          "top3Candidates": [
+            {
+              "account": "Test",
+              "status": "Candidate for Further Review",
+              "priority": "LOW",
+              "reason": "100% of source outgoing value went to this counterparty."
+            }
+          ],
+          "otherLinkedAccounts": [],
+          "systemRecommendation": {
+            "action": "Upload Statement for Test",
+            "targetAccount": "Test",
+            "why": [
+              "Highest current investigation priority based on available evidence.",
+              "Strongest evidence in the uploaded statement.",
+              "Could clarify downstream money movement.",
+              "Could confirm or reject the suspected chain."
+            ]
+          },
+          "cashOutAnalysis": null,
+          "predictedHotspots": [],
+          "evidenceSummary": [
+            {
+              "id": "TXN-CSV-1790240771407-1",
+              "date": "2026-01-01T00:00:10.000Z",
+              "amount": 1000,
+              "signals": "High Risk"
+            }
+          ],
+          "investigatorAction": "No immediate action required. Routine monitoring."
+        }
+      }
+    }
+  ],
+  "transactions": [
+    {
+      "id": "TXN-CSV-1790240771407-1",
+      "statementId": null,
+      "sourceAccountId": "Uploaded Account",
+      "counterpartyAccountId": "Test",
+      "date": "2026-01-01T00:00:10.000Z",
+      "valueDate": 46023.00011574074,
+      "postDate": null,
+      "amount": 1000,
+      "debit": 1000,
+      "credit": 0,
+      "direction": "DEBIT",
+      "transactionType": null,
+      "paymentMode": null,
+      "referenceId": null,
+      "transactionReference": null,
+      "description": "UPI/Test",
+      "narration": "UPI/Test",
+      "sender": "Uploaded Account",
+      "receiver": "Test",
+      "counterparty": "Test",
+      "bankCode": "UNKNOWN",
+      "upiId": null,
+      "balance": 9000,
+      "balanceAfter": 9000,
+      "location": null,
+      "parserConfidence": 1,
+      "timestamp": "2026-01-01T00:00:10.000Z",
+      "type": "DEBIT",
+      "sourceAccount": "Uploaded Account",
+      "destAccount": "Test",
+      "UTR": null,
+      "RRN": null,
+      "bank": "UNKNOWN",
+      "riskScore": 0
+    }
+  ],
+  "findings": [],
+  "timeline": [
+    {
+      "timestamp": "2026-09-24T09:06:11.609Z",
+      "event": "Statement added for account Not available in statement (1 transactions)",
+      "user": "Investigator"
+    }
+  ],
+  "atmMarkers": []
+}

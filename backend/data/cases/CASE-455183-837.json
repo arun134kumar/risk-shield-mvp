@@ -1,0 +1,2431 @@
+{
+  "id": "CASE-455183-837",
+  "title": null,
+  "status": "OPEN",
+  "rootAccountId": null,
+  "createdAt": "2026-09-24T09:00:55.183Z",
+  "updatedAt": "2026-09-24T09:00:55.183Z",
+  "investigatorNotes": "",
+  "dataQuality": "UNKNOWN",
+  "reportVersion": "1.0",
+  "statements": [
+    {
+      "accountId": "TEST-ACC",
+      "analysisResult": {
+        "transactions": [
+          {
+            "id": "TXN-0",
+            "amount": 211.06206599747046,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-1",
+            "amount": 6375.393197824582,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-2",
+            "amount": 9156.83066575341,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-3",
+            "amount": 4369.644105958104,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-4",
+            "amount": 623.1207133759398,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-5",
+            "amount": 3695.268923004931,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-6",
+            "amount": 8073.020725306531,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-7",
+            "amount": 3490.1568732191613,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-8",
+            "amount": 350.4843965295723,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-9",
+            "amount": 1121.5487732260165,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-10",
+            "amount": 9904.515639663055,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-11",
+            "amount": 6854.185230621642,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-12",
+            "amount": 6553.490111791116,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-13",
+            "amount": 1401.0204907182322,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-14",
+            "amount": 7134.1695763741955,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-15",
+            "amount": 3660.549860401914,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-16",
+            "amount": 8667.613523791573,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-17",
+            "amount": 7094.073546071338,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-18",
+            "amount": 7227.573178115684,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-19",
+            "amount": 456.95546635369345,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-20",
+            "amount": 608.2233653887348,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-21",
+            "amount": 5073.7816363688935,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-22",
+            "amount": 4417.365786583117,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-23",
+            "amount": 8745.24138443155,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-24",
+            "amount": 2560.2161115878052,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-25",
+            "amount": 6057.589079595877,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-26",
+            "amount": 8068.045471217614,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-27",
+            "amount": 4478.261653515329,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-28",
+            "amount": 4970.380975660101,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-29",
+            "amount": 747.1109641214357,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-30",
+            "amount": 7845.31431641177,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-31",
+            "amount": 6903.334163627363,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-32",
+            "amount": 4513.300712658262,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-33",
+            "amount": 9574.793829502905,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-34",
+            "amount": 837.9966946931572,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-35",
+            "amount": 7274.493399687984,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-36",
+            "amount": 6105.553149335953,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-37",
+            "amount": 4887.645670259777,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-38",
+            "amount": 2547.2874958246293,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-39",
+            "amount": 9448.51851926802,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-40",
+            "amount": 455.218234331054,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-41",
+            "amount": 3749.466714114257,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-42",
+            "amount": 586.1525021204761,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-43",
+            "amount": 1116.5598612704098,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-44",
+            "amount": 5890.219832621775,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-45",
+            "amount": 3906.8960321884038,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-46",
+            "amount": 2912.572288218118,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-47",
+            "amount": 1537.5757675668856,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-48",
+            "amount": 8695.696235214917,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-49",
+            "amount": 1490.6917508355455,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-50",
+            "amount": 8228.674130849986,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-51",
+            "amount": 3180.579719525043,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-52",
+            "amount": 7540.487361881703,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-53",
+            "amount": 8131.513895051604,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-54",
+            "amount": 7746.330310723625,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-55",
+            "amount": 609.7055692070874,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-56",
+            "amount": 2467.392641114301,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-57",
+            "amount": 2863.4506183966455,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-58",
+            "amount": 8924.542153554221,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-59",
+            "amount": 2945.057034356092,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-60",
+            "amount": 1259.1344824035689,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-61",
+            "amount": 7508.699500000526,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-62",
+            "amount": 9610.834224354103,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-63",
+            "amount": 7647.629929543435,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-64",
+            "amount": 3218.732362879838,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-65",
+            "amount": 7658.49749410757,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-66",
+            "amount": 9227.723452831326,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-67",
+            "amount": 3114.15362893134,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-68",
+            "amount": 2693.7769701108136,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-69",
+            "amount": 1827.9649574606783,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-70",
+            "amount": 3784.4253092685076,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-71",
+            "amount": 4240.738315172697,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-72",
+            "amount": 2397.456398147715,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-73",
+            "amount": 7525.996646829038,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-74",
+            "amount": 4953.897610030576,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-75",
+            "amount": 5270.608927069948,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-76",
+            "amount": 8133.318610677172,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-77",
+            "amount": 5117.444795804915,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-78",
+            "amount": 4383.889599944269,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-79",
+            "amount": 273.123931954552,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-80",
+            "amount": 1979.5420971542133,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-81",
+            "amount": 5530.883938917569,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-82",
+            "amount": 1883.4943280290406,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-83",
+            "amount": 8608.475186634225,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-84",
+            "amount": 6951.539952474482,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-85",
+            "amount": 6586.032831384264,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-86",
+            "amount": 9591.154963259105,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-87",
+            "amount": 1156.696381768142,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-88",
+            "amount": 5780.921559375942,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-89",
+            "amount": 216.21769250660728,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-90",
+            "amount": 3908.2919921556845,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-91",
+            "amount": 8106.668805768141,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-92",
+            "amount": 5425.590371947814,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-93",
+            "amount": 9858.846985776965,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-94",
+            "amount": 3626.711565883165,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-95",
+            "amount": 7423.843288384167,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-96",
+            "amount": 222.4253462416126,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-97",
+            "amount": 9875.767563585257,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-98",
+            "amount": 5731.155182433347,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-99",
+            "amount": 9027.138396596709,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-100",
+            "amount": 2393.101793361987,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-101",
+            "amount": 6655.836627923169,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-102",
+            "amount": 9307.90242464022,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-103",
+            "amount": 1963.5694773686519,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-104",
+            "amount": 6023.162930455228,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-105",
+            "amount": 2958.3607791330537,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-106",
+            "amount": 6148.020387214289,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-107",
+            "amount": 5429.68554494711,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-108",
+            "amount": 3102.078852054254,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-109",
+            "amount": 8916.756072186201,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-110",
+            "amount": 9119.84593772259,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-111",
+            "amount": 1703.9801491087414,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-112",
+            "amount": 3002.4928516221407,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-113",
+            "amount": 179.35203310586735,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-114",
+            "amount": 4005.215385749752,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-115",
+            "amount": 6839.374066499181,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-116",
+            "amount": 7132.281656530201,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-117",
+            "amount": 9163.79684159071,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-118",
+            "amount": 9054.603259097883,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-119",
+            "amount": 3243.101082591602,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-120",
+            "amount": 6940.728451142752,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-121",
+            "amount": 3377.1714050077608,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-122",
+            "amount": 2959.112730364364,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-123",
+            "amount": 5576.050966252372,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-124",
+            "amount": 6325.238219334619,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-125",
+            "amount": 3927.77835890463,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-126",
+            "amount": 3109.0230260301064,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-127",
+            "amount": 5466.450010037915,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-128",
+            "amount": 7884.792153454495,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-129",
+            "amount": 917.5173441327067,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-130",
+            "amount": 317.45533700546116,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-131",
+            "amount": 9850.046501746832,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-132",
+            "amount": 4780.593581587687,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-133",
+            "amount": 8240.511812002558,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-134",
+            "amount": 3255.825023190243,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-135",
+            "amount": 5508.592187707643,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-136",
+            "amount": 7539.733794261199,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-137",
+            "amount": 4140.258012280666,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-138",
+            "amount": 984.9663908012074,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-139",
+            "amount": 1059.188152863556,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-140",
+            "amount": 1977.1375540439894,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-141",
+            "amount": 625.5331333393622,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-142",
+            "amount": 1286.2682456671848,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-143",
+            "amount": 5339.570904029604,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-144",
+            "amount": 5930.443105995452,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-145",
+            "amount": 1654.0589426708818,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-146",
+            "amount": 9215.852424469407,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-147",
+            "amount": 3950.2306495947028,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-148",
+            "amount": 7260.300177447686,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-149",
+            "amount": 9661.334956359235,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-150",
+            "amount": 4331.754597027171,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-151",
+            "amount": 174.27398718182886,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-152",
+            "amount": 5842.493767920714,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-153",
+            "amount": 2331.7380730859772,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-154",
+            "amount": 7814.047812324352,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-155",
+            "amount": 4600.090414610169,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-156",
+            "amount": 2539.3381653125757,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-157",
+            "amount": 948.0092934380502,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-158",
+            "amount": 6806.120832801143,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-159",
+            "amount": 3818.5511144060756,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-160",
+            "amount": 8247.265950139536,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-161",
+            "amount": 6752.418420455152,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-162",
+            "amount": 3112.7157077332645,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-163",
+            "amount": 5510.083951472436,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-164",
+            "amount": 7250.398971333085,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-165",
+            "amount": 7688.081191196664,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-166",
+            "amount": 4748.6484277065365,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-167",
+            "amount": 325.96672463528154,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-168",
+            "amount": 7524.028650182038,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-169",
+            "amount": 3619.4426772497536,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-170",
+            "amount": 5997.319248224237,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-171",
+            "amount": 6590.049777087706,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-172",
+            "amount": 7878.464425681498,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-173",
+            "amount": 3531.8806554728553,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-174",
+            "amount": 5836.626322423402,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-175",
+            "amount": 5738.783320006561,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-176",
+            "amount": 3570.5046211104664,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-177",
+            "amount": 776.5160241710156,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-178",
+            "amount": 4786.613220621318,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-179",
+            "amount": 4325.038231069375,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-180",
+            "amount": 2435.869176017763,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-181",
+            "amount": 1847.1544965460996,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-182",
+            "amount": 4413.286903451799,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-183",
+            "amount": 2047.6131692790866,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-184",
+            "amount": 4493.39534894749,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-185",
+            "amount": 6424.661740099738,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-186",
+            "amount": 8139.29561122849,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-187",
+            "amount": 1726.824455286743,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-188",
+            "amount": 6217.847332671643,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-189",
+            "amount": 9330.673654412421,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          },
+          {
+            "id": "TXN-190",
+            "amount": 4238.276619271951,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-0"
+          },
+          {
+            "id": "TXN-191",
+            "amount": 2774.1286421722757,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-1"
+          },
+          {
+            "id": "TXN-192",
+            "amount": 7312.094645092289,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-2"
+          },
+          {
+            "id": "TXN-193",
+            "amount": 3550.5076070133023,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-3"
+          },
+          {
+            "id": "TXN-194",
+            "amount": 3637.9048086609987,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-4"
+          },
+          {
+            "id": "TXN-195",
+            "amount": 1944.204820325529,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-5"
+          },
+          {
+            "id": "TXN-196",
+            "amount": 1261.8223422323592,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-6"
+          },
+          {
+            "id": "TXN-197",
+            "amount": 6745.918678260896,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-7"
+          },
+          {
+            "id": "TXN-198",
+            "amount": 1649.351896594522,
+            "direction": "DEBIT",
+            "counterpartyAccountId": "ACC-8"
+          },
+          {
+            "id": "TXN-199",
+            "amount": 9203.979284871879,
+            "direction": "CREDIT",
+            "counterpartyAccountId": "ACC-9"
+          }
+        ],
+        "patterns": []
+      }
+    }
+  ],
+  "transactions": [
+    {
+      "id": "TXN-0",
+      "amount": 211.06206599747046,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-1",
+      "amount": 6375.393197824582,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-2",
+      "amount": 9156.83066575341,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-3",
+      "amount": 4369.644105958104,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-4",
+      "amount": 623.1207133759398,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-5",
+      "amount": 3695.268923004931,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-6",
+      "amount": 8073.020725306531,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-7",
+      "amount": 3490.1568732191613,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-8",
+      "amount": 350.4843965295723,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-9",
+      "amount": 1121.5487732260165,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-10",
+      "amount": 9904.515639663055,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-11",
+      "amount": 6854.185230621642,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-12",
+      "amount": 6553.490111791116,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-13",
+      "amount": 1401.0204907182322,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-14",
+      "amount": 7134.1695763741955,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-15",
+      "amount": 3660.549860401914,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-16",
+      "amount": 8667.613523791573,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-17",
+      "amount": 7094.073546071338,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-18",
+      "amount": 7227.573178115684,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-19",
+      "amount": 456.95546635369345,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-20",
+      "amount": 608.2233653887348,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-21",
+      "amount": 5073.7816363688935,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-22",
+      "amount": 4417.365786583117,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-23",
+      "amount": 8745.24138443155,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-24",
+      "amount": 2560.2161115878052,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-25",
+      "amount": 6057.589079595877,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-26",
+      "amount": 8068.045471217614,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-27",
+      "amount": 4478.261653515329,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-28",
+      "amount": 4970.380975660101,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-29",
+      "amount": 747.1109641214357,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-30",
+      "amount": 7845.31431641177,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-31",
+      "amount": 6903.334163627363,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-32",
+      "amount": 4513.300712658262,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-33",
+      "amount": 9574.793829502905,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-34",
+      "amount": 837.9966946931572,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-35",
+      "amount": 7274.493399687984,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-36",
+      "amount": 6105.553149335953,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-37",
+      "amount": 4887.645670259777,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-38",
+      "amount": 2547.2874958246293,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-39",
+      "amount": 9448.51851926802,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-40",
+      "amount": 455.218234331054,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-41",
+      "amount": 3749.466714114257,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-42",
+      "amount": 586.1525021204761,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-43",
+      "amount": 1116.5598612704098,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-44",
+      "amount": 5890.219832621775,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-45",
+      "amount": 3906.8960321884038,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-46",
+      "amount": 2912.572288218118,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-47",
+      "amount": 1537.5757675668856,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-48",
+      "amount": 8695.696235214917,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-49",
+      "amount": 1490.6917508355455,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-50",
+      "amount": 8228.674130849986,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-51",
+      "amount": 3180.579719525043,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-52",
+      "amount": 7540.487361881703,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-53",
+      "amount": 8131.513895051604,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-54",
+      "amount": 7746.330310723625,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-55",
+      "amount": 609.7055692070874,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-56",
+      "amount": 2467.392641114301,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-57",
+      "amount": 2863.4506183966455,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-58",
+      "amount": 8924.542153554221,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-59",
+      "amount": 2945.057034356092,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-60",
+      "amount": 1259.1344824035689,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-61",
+      "amount": 7508.699500000526,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-62",
+      "amount": 9610.834224354103,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-63",
+      "amount": 7647.629929543435,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-64",
+      "amount": 3218.732362879838,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-65",
+      "amount": 7658.49749410757,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-66",
+      "amount": 9227.723452831326,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-67",
+      "amount": 3114.15362893134,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-68",
+      "amount": 2693.7769701108136,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-69",
+      "amount": 1827.9649574606783,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-70",
+      "amount": 3784.4253092685076,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-71",
+      "amount": 4240.738315172697,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-72",
+      "amount": 2397.456398147715,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-73",
+      "amount": 7525.996646829038,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-74",
+      "amount": 4953.897610030576,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-75",
+      "amount": 5270.608927069948,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-76",
+      "amount": 8133.318610677172,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-77",
+      "amount": 5117.444795804915,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-78",
+      "amount": 4383.889599944269,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-79",
+      "amount": 273.123931954552,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-80",
+      "amount": 1979.5420971542133,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-81",
+      "amount": 5530.883938917569,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-82",
+      "amount": 1883.4943280290406,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-83",
+      "amount": 8608.475186634225,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-84",
+      "amount": 6951.539952474482,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-85",
+      "amount": 6586.032831384264,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-86",
+      "amount": 9591.154963259105,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-87",
+      "amount": 1156.696381768142,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-88",
+      "amount": 5780.921559375942,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-89",
+      "amount": 216.21769250660728,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-90",
+      "amount": 3908.2919921556845,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-91",
+      "amount": 8106.668805768141,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-92",
+      "amount": 5425.590371947814,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-93",
+      "amount": 9858.846985776965,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-94",
+      "amount": 3626.711565883165,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-95",
+      "amount": 7423.843288384167,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-96",
+      "amount": 222.4253462416126,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-97",
+      "amount": 9875.767563585257,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-98",
+      "amount": 5731.155182433347,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-99",
+      "amount": 9027.138396596709,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-100",
+      "amount": 2393.101793361987,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-101",
+      "amount": 6655.836627923169,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-102",
+      "amount": 9307.90242464022,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-103",
+      "amount": 1963.5694773686519,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-104",
+      "amount": 6023.162930455228,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-105",
+      "amount": 2958.3607791330537,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-106",
+      "amount": 6148.020387214289,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-107",
+      "amount": 5429.68554494711,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-108",
+      "amount": 3102.078852054254,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-109",
+      "amount": 8916.756072186201,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-110",
+      "amount": 9119.84593772259,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-111",
+      "amount": 1703.9801491087414,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-112",
+      "amount": 3002.4928516221407,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-113",
+      "amount": 179.35203310586735,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-114",
+      "amount": 4005.215385749752,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-115",
+      "amount": 6839.374066499181,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-116",
+      "amount": 7132.281656530201,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-117",
+      "amount": 9163.79684159071,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-118",
+      "amount": 9054.603259097883,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-119",
+      "amount": 3243.101082591602,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-120",
+      "amount": 6940.728451142752,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-121",
+      "amount": 3377.1714050077608,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-122",
+      "amount": 2959.112730364364,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-123",
+      "amount": 5576.050966252372,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-124",
+      "amount": 6325.238219334619,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-125",
+      "amount": 3927.77835890463,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-126",
+      "amount": 3109.0230260301064,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-127",
+      "amount": 5466.450010037915,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-128",
+      "amount": 7884.792153454495,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-129",
+      "amount": 917.5173441327067,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-130",
+      "amount": 317.45533700546116,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-131",
+      "amount": 9850.046501746832,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-132",
+      "amount": 4780.593581587687,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-133",
+      "amount": 8240.511812002558,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-134",
+      "amount": 3255.825023190243,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-135",
+      "amount": 5508.592187707643,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-136",
+      "amount": 7539.733794261199,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-137",
+      "amount": 4140.258012280666,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-138",
+      "amount": 984.9663908012074,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-139",
+      "amount": 1059.188152863556,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-140",
+      "amount": 1977.1375540439894,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-141",
+      "amount": 625.5331333393622,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-142",
+      "amount": 1286.2682456671848,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-143",
+      "amount": 5339.570904029604,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-144",
+      "amount": 5930.443105995452,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-145",
+      "amount": 1654.0589426708818,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-146",
+      "amount": 9215.852424469407,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-147",
+      "amount": 3950.2306495947028,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-148",
+      "amount": 7260.300177447686,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-149",
+      "amount": 9661.334956359235,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-150",
+      "amount": 4331.754597027171,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-151",
+      "amount": 174.27398718182886,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-152",
+      "amount": 5842.493767920714,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-153",
+      "amount": 2331.7380730859772,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-154",
+      "amount": 7814.047812324352,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-155",
+      "amount": 4600.090414610169,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-156",
+      "amount": 2539.3381653125757,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-157",
+      "amount": 948.0092934380502,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-158",
+      "amount": 6806.120832801143,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-159",
+      "amount": 3818.5511144060756,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-160",
+      "amount": 8247.265950139536,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-161",
+      "amount": 6752.418420455152,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-162",
+      "amount": 3112.7157077332645,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-163",
+      "amount": 5510.083951472436,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-164",
+      "amount": 7250.398971333085,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-165",
+      "amount": 7688.081191196664,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-166",
+      "amount": 4748.6484277065365,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-167",
+      "amount": 325.96672463528154,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-168",
+      "amount": 7524.028650182038,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-169",
+      "amount": 3619.4426772497536,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-170",
+      "amount": 5997.319248224237,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-171",
+      "amount": 6590.049777087706,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-172",
+      "amount": 7878.464425681498,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-173",
+      "amount": 3531.8806554728553,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-174",
+      "amount": 5836.626322423402,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-175",
+      "amount": 5738.783320006561,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-176",
+      "amount": 3570.5046211104664,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-177",
+      "amount": 776.5160241710156,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-178",
+      "amount": 4786.613220621318,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-179",
+      "amount": 4325.038231069375,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-180",
+      "amount": 2435.869176017763,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-181",
+      "amount": 1847.1544965460996,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-182",
+      "amount": 4413.286903451799,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-183",
+      "amount": 2047.6131692790866,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-184",
+      "amount": 4493.39534894749,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-185",
+      "amount": 6424.661740099738,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-186",
+      "amount": 8139.29561122849,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-187",
+      "amount": 1726.824455286743,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-188",
+      "amount": 6217.847332671643,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-189",
+      "amount": 9330.673654412421,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    },
+    {
+      "id": "TXN-190",
+      "amount": 4238.276619271951,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-0"
+    },
+    {
+      "id": "TXN-191",
+      "amount": 2774.1286421722757,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-1"
+    },
+    {
+      "id": "TXN-192",
+      "amount": 7312.094645092289,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-2"
+    },
+    {
+      "id": "TXN-193",
+      "amount": 3550.5076070133023,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-3"
+    },
+    {
+      "id": "TXN-194",
+      "amount": 3637.9048086609987,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-4"
+    },
+    {
+      "id": "TXN-195",
+      "amount": 1944.204820325529,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-5"
+    },
+    {
+      "id": "TXN-196",
+      "amount": 1261.8223422323592,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-6"
+    },
+    {
+      "id": "TXN-197",
+      "amount": 6745.918678260896,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-7"
+    },
+    {
+      "id": "TXN-198",
+      "amount": 1649.351896594522,
+      "direction": "DEBIT",
+      "counterpartyAccountId": "ACC-8"
+    },
+    {
+      "id": "TXN-199",
+      "amount": 9203.979284871879,
+      "direction": "CREDIT",
+      "counterpartyAccountId": "ACC-9"
+    }
+  ],
+  "findings": [],
+  "timeline": [
+    {
+      "timestamp": "2026-09-24T09:00:55.184Z",
+      "event": "Statement added for account TEST-ACC (200 transactions)",
+      "user": "Investigator"
+    }
+  ]
+}

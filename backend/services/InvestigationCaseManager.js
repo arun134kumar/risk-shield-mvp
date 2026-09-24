@@ -80,10 +80,16 @@ class InvestigationCaseManager {
             caseData.id = caseId;
         }
 
-        // Add statement with its raw analysisResult for the frontend Tab view
+        const compactAnalysisResult = { ...analysisResult };
+        if (compactAnalysisResult.transactions) compactAnalysisResult.transactions = undefined;
+        if (compactAnalysisResult.patterns) compactAnalysisResult.patterns = undefined;
+        if (compactAnalysisResult.atmMarkers) compactAnalysisResult.atmMarkers = undefined;
+        if (compactAnalysisResult.predictedHotspots) compactAnalysisResult.predictedHotspots = undefined;
+
+        // Add statement with compact analysisResult for the frontend Tab view
         caseData.statements.push({
             ...statement,
-            analysisResult
+            analysisResult: compactAnalysisResult
         });
         
         // Add transactions
@@ -94,6 +100,12 @@ class InvestigationCaseManager {
         // Add findings
         if (analysisResult && analysisResult.patterns) {
             caseData.findings.push(...analysisResult.patterns);
+        }
+
+        // Add atmMarkers
+        if (!caseData.atmMarkers) caseData.atmMarkers = [];
+        if (analysisResult && analysisResult.atmMarkers) {
+            caseData.atmMarkers.push(...analysisResult.atmMarkers);
         }
 
         // Add to timeline
@@ -125,6 +137,7 @@ class InvestigationCaseManager {
             statements: caseData.statements,
             transactions: caseData.transactions,
             findings: caseData.findings,
+            atmMarkers: caseData.atmMarkers || [],
             timeline: caseData.timeline
         };
     }

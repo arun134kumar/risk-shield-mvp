@@ -1,0 +1,16 @@
+{
+  "id": "CASE-771608-377",
+  "title": null,
+  "status": "OPEN",
+  "rootAccountId": null,
+  "createdAt": "2026-09-24T09:06:11.608Z",
+  "updatedAt": "2026-09-24T09:06:11.608Z",
+  "investigatorNotes": "",
+  "dataQuality": "UNKNOWN",
+  "reportVersion": "1.0",
+  "statements": [],
+  "transactions": [],
+  "findings": [],
+  "timeline": [],
+  "atmMarkers": []
+}

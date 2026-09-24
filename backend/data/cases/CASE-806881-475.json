@@ -1,0 +1,16 @@
+{
+  "id": "CASE-806881-475",
+  "title": null,
+  "status": "OPEN",
+  "rootAccountId": null,
+  "createdAt": "2026-09-24T09:06:46.881Z",
+  "updatedAt": "2026-09-24T09:06:46.881Z",
+  "investigatorNotes": "",
+  "dataQuality": "UNKNOWN",
+  "reportVersion": "1.0",
+  "statements": [],
+  "transactions": [],
+  "findings": [],
+  "timeline": [],
+  "atmMarkers": []
+}

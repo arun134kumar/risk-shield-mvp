@@ -6,7 +6,7 @@ describe('Phase 9: Complete Investigation Report', () => {
         const mockCaseData = {
             caseInfo: { id: 'c1', description: 'Test Case', status: 'OPEN', createdAt: '2026-09-01T10:00:00Z' },
             statements: [
-                { id: 's1', accountId: 'A', analysisResult: { atmMarkers: [{ id: 'atm1', location: 'GORAKHPUR', withdrawalsCount: 3, totalWithdrawn: 30000, maxRisk: 0.9, resolved: true, lat: 26.7, lng: 83.3 }] } }
+                { id: 's1', accountId: 'A', analysisResult: {} }
             ],
             transactions: [
                 { direction: 'DEBIT', accountId: 'A', counterpartyAccountId: 'B', amount: 10000 },
@@ -16,7 +16,8 @@ describe('Phase 9: Complete Investigation Report', () => {
             findings: [
                 new Finding({ title: 'Smurfing Detected', type: 'PATTERN', severity: 'CRITICAL', confidence: 0.9, entityId: 'A' }),
                 new Finding({ title: 'Low Balance', type: 'BEHAVIOR', severity: 'LOW', confidence: 0.8, entityId: 'A' })
-            ]
+            ],
+            atmMarkers: [{ id: 'atm1', location: 'GORAKHPUR', withdrawalsCount: 3, totalWithdrawn: 30000, maxRisk: 0.9, resolved: true, lat: 26.7, lng: 83.3 }]
         };
 
         const report = ReportBuilder.generateCaseReport(mockCaseData);

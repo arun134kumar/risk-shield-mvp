@@ -13,6 +13,7 @@ class Case {
         this.transactions = [];
         this.findings = [];
         this.timeline = [];
+        this.atmMarkers = [];
     }
 }
 
